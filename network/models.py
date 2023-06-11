@@ -18,7 +18,7 @@ class Post(models.Model):
 
     # Count likes
     def get_likes(self):
-        return self.likes.objects.count()
+        return self.likes.count()
     
     def __str__(self):
         return f"A post created by {self.posted_by} on {self.posted_on}"
