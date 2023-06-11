@@ -1,14 +1,39 @@
+import json
+
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User
+from .models import User, Post
 
 
 def index(request):
     return render(request, "network/index.html")
+
+
+@csrf_exempt
+@login_required
+def create_post(request):
+    # Ensure POST request
+    if request.method != "POST":
+        return JsonResponse({"msg": "POST request required!"}, status=400)
+    
+    # Load json data    
+    data = json.loads(request.body)
+    
+    # Check data has content
+    if not data["content"]:
+        return JsonResponse({"error": "post has no content!"}, status=400)
+
+    # Create post
+    post = Post.objects.create(content=data["content"], posted_by=request.user)
+    post.save()
+    
+    return JsonResponse({"msg": "post created!"}, status=201)
 
 
 def login_view(request):
