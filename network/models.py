@@ -27,7 +27,7 @@ class Post(models.Model):
 # Follower
 class Follower(models.Model):
     followee = models.ForeignKey(User, on_delete=models.CASCADE, related_name="followers")
-    follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name="follows")
+    follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name="followings")
     
     # Check for valid follow
     def is_valid_follow(self):

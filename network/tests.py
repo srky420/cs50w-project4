@@ -50,12 +50,19 @@ class ModelsTest(TestCase):
         p = Post.objects.get(pk=2)
         self.assertEqual(p.comments.count(), 2)
         
-    # Test valid follow
-    def test_follow(self):
+    # Test followers
+    def test_followers(self):
         harry = User.objects.get(username="Harry")
-        f = Follower.objects.get(followee=harry, follower=harry)
-                
-        self.assertFalse(f.is_valid_follow())
-        self.assertEqual(Follower.objects.filter(followee=harry).count(), 3)
+        self.assertEqual(harry.followers.count(), 3)
         
+    # Test followings
+    def test_followings(self):
+        harry = User.objects.get(username="Harry")
+        self.assertEqual(harry.followings.count(), 1)
+        
+    # Test valid follow
+    def test_valid_follow(self):
+        harry = User.objects.get(username="Harry")
+        f = Follower.objects.get(followee=harry, follower=harry)   
+        self.assertFalse(f.is_valid_follow())
     
