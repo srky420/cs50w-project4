@@ -45,8 +45,10 @@ class ModelsTest(TestCase):
         
     # Test number of likes
     def test_likes(self):
-        p = Post.objects.get(pk=1)
-        self.assertEqual(p.get_likes(), 2)
+        p1 = Post.objects.get(pk=1)
+        p2 = Post.objects.get(pk=2)
+        self.assertEqual(p1.get_likes(), 2)
+        self.assertEqual(p2.get_likes(), 0)
         
     # Test number of comments
     def test_post_comments(self):
@@ -75,17 +77,19 @@ class ViewsTest(TestCase):
     
     # Setup
     def setUp(self):
-        User.objects.create_user(username="test-user", password="test123")
-
-    # Test login
-    def test_login(self):
-        c = Client()
-        logged_in = c.login(username="test-user", password="test123")
-        self.assertTrue(logged_in)
+        testuser = User.objects.create_user(username="test-user", password="12345")
+        for i in range(5):
+            Post.objects.create(content="Hello, World", posted_by=testuser)
         
     # Test create post feature
     def test_create_post(self):
         c = Client()
-        c.login(username="test-user", password="test123")
+        c.login(username="test-user", password="12345")
         response = c.post("/create-post", {"content": "Hello, World"}, content_type="application/json")
         self.assertEqual(response.status_code, 201)
+
+    # Test all posts view
+    def text_all_posts_view(self):
+        c = Client()
+        response = c.get("/")
+        self.assertEqual(response.context["posts"].count(), 5)
