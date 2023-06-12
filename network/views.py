@@ -17,7 +17,6 @@ def index(request):
     })
 
 
-@csrf_exempt
 @login_required
 def create_post(request):
     # Ensure POST request
