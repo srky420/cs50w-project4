@@ -12,9 +12,7 @@ from .models import User, Post
 
 
 def index(request):
-    return render(request, "network/index.html", {
-        "posts": Post.objects.all()
-    })
+    return render(request, "network/index.html")
 
 
 @login_required
@@ -36,6 +34,21 @@ def create_post(request):
     
     return JsonResponse({"msg": "post created!"}, status=201)
 
+
+def posts(request, filter):
+    # Check filter
+    if filter == "all":
+        posts = Post.objects.all()
+    elif filter == "following":
+        pass
+    else:
+        return JsonResponse({"error": "filter not found!"}, status_code=400) 
+    
+    posts = posts.order_by("-posted_on").all()
+    return JsonResponse([post.serialize() for post in posts], safe=False)
+        
+    
+    
 
 def login_view(request):
     if request.method == "POST":

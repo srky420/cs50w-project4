@@ -20,6 +20,15 @@ class Post(models.Model):
     def get_likes(self):
         return self.likes.count()
     
+    # Serialize data
+    def serialize(self):
+        return {
+            "content": self.content,
+            "posted_on": self.posted_on.strftime("%b %d %Y, %I:%M %p"),
+            "posted_by": self.posted_by.username,
+            "likes": self.get_likes()
+        }
+    
     def __str__(self):
         return f"A post created by {self.posted_by} on {self.posted_on}"
 
