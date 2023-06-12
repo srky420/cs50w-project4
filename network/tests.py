@@ -1,8 +1,11 @@
-from django.test import TestCase
+import json
+
+from django.test import TestCase, Client
 
 from .models import User, Post, Follower, Comment
 
 # Create your tests here.
+# Models Test Case
 class ModelsTest(TestCase):
     
     # Setup
@@ -66,3 +69,23 @@ class ModelsTest(TestCase):
         f = Follower.objects.get(followee=harry, follower=harry)   
         self.assertFalse(f.is_valid_follow())
     
+
+# Views Test Case
+class ViewsTest(TestCase):
+    
+    # Setup
+    def setUp(self):
+        User.objects.create_user(username="test-user", password="test123")
+
+    # Test login
+    def test_login(self):
+        c = Client()
+        logged_in = c.login(username="test-user", password="test123")
+        self.assertTrue(logged_in)
+        
+    # Test create post feature
+    def test_create_post(self):
+        c = Client()
+        c.login(username="test-user", password="test123")
+        response = c.post("/create-post", {"content": "Hello, World"}, content_type="application/json")
+        self.assertEqual(response.status_code, 201)
