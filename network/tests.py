@@ -100,8 +100,14 @@ class ViewsTest(TestCase):
     # Test create post feature
     def test_create_post(self):
         c = Client()
+        
+        # Test without login
+        response = c.post("/create-post", data={"content": "Hello, World"}, content_type="application/json")
+        self.assertEqual(response.status_code, 302)
+        
+        # Test with login
         c.login(username="Harry", password="12345")
-        response = c.post("/create-post", {"content": "Hello, World"}, content_type="application/json")
+        response = c.post("/create-post", data={"content": "Hello, World"}, content_type="application/json")
         self.assertEqual(response.status_code, 201)
 
 
@@ -116,6 +122,12 @@ class ViewsTest(TestCase):
     # Test followings posts
     def test_followings_posts_view(self):
         c = Client()
+        
+        # Test without login
+        response = c.get("/posts/following")
+        self.assertEqual(response.status_code, 400)
+        
+        # Test with login
         c.login(username="Ron", password="12345")
         response = c.get("/posts/following")
         response = response.json()
