@@ -38,10 +38,17 @@ def create_post(request):
 def posts(request, filter):
     # Check filter
     if filter == "all":
-        posts = Post.objects.all()
-    elif filter == "following":
+        posts = Post.objects.all() 
+    elif filter == "following" and request.user.is_authenticated:
+        
+        # Get all posts of current user's followings
         followings = Follower.objects.filter(follower=request.user)
-        posts = [f.followee.posts for f in followings]
+        posts = []
+        for f in followings:
+            for post in f.followee.posts.all():
+                posts.append(post.id)
+        
+        posts = Post.objects.filter(pk__in=posts)
     else:
         return JsonResponse({"error": "filter not found!"}, status=400)
     

@@ -86,13 +86,15 @@ class ViewsTest(TestCase):
     # Setup
     def setUp(self):
         harry = User.objects.create_user(username="Harry", email="harrypotter@example.com", password="12345")
-        ron = User.objects.create_user(username="Hermione", email="hermionegranger@example.com", password="12345")
-        hermione = User.objects.create_user(username="Ron", email="ronweasly@example.com", password="12345")
+        ron = User.objects.create_user(username="Ron", email="ronweasly@example.com", password="12345")
+        hermione = User.objects.create_user(username="Hermione", email="hermionegranger@example.com", password="12345")
 
         for i in range(5):
             Post.objects.create(content="Hello, I'm Harry", posted_by=harry)
             Post.objects.create(content="Hello, Ron here!", posted_by=ron)
             Post.objects.create(content="Hi, I'm Hermione", posted_by=hermione)
+            
+        Follower.objects.create(followee=harry, follower=ron)
         
         
     # Test create post feature
@@ -109,6 +111,15 @@ class ViewsTest(TestCase):
         response = c.get("/posts/all")
         response = response.json()
         self.assertEqual(len(response), 15)
+        
+    
+    # Test followings posts
+    def test_followings_posts_view(self):
+        c = Client()
+        c.login(username="Ron", password="12345")
+        response = c.get("/posts/following")
+        response = response.json()
+        self.assertEqual(len(response), 5)
 
         
     
