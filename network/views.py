@@ -8,7 +8,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User, Post
+from .models import User, Post, Follower
 
 
 def index(request):
@@ -40,14 +40,13 @@ def posts(request, filter):
     if filter == "all":
         posts = Post.objects.all()
     elif filter == "following":
-        pass
+        followings = Follower.objects.filter(follower=request.user)
+        posts = [f.followee.posts for f in followings]
     else:
-        return JsonResponse({"error": "filter not found!"}, status_code=400) 
+        return JsonResponse({"error": "filter not found!"}, status=400)
     
     posts = posts.order_by("-posted_on").all()
     return JsonResponse([post.serialize() for post in posts], safe=False)
-        
-    
     
 
 def login_view(request):

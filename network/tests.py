@@ -106,8 +106,9 @@ class ViewsTest(TestCase):
     # Test all posts view
     def test_all_posts_view(self):
         c = Client()
-        response = c.get("/")
-        self.assertEqual(response.context["posts"].count(), 15)
+        response = c.get("/posts/all")
+        response = response.json()
+        self.assertEqual(len(response), 15)
 
         
     
