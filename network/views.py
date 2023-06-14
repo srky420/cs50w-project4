@@ -7,6 +7,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
+from django.core.paginator import Paginator
 
 from .models import User, Post, Follower
 
@@ -53,9 +54,26 @@ def posts(request, filter):
         return JsonResponse({"error": "filter not found!"}, status=400)
     
     posts = posts.order_by("-posted_on").all()
+    
+    # Get page num from args
+    page_num = request.GET.get("page")
+    
+    # Create pagination
+    paginator = Paginator(posts, 10)
+    posts = paginator.get_page(page_num)
+    
     return JsonResponse([post.serialize() for post in posts], safe=False)
     
 
+def profile(request, id):
+    try:
+        user = User.objects.get(pk=id)
+    except User.DoesNotExist:
+        return JsonResponse({"error": "user not found!"}, status=400)
+    
+    return JsonResponse(user.serialize())
+    
+    
 def login_view(request):
     if request.method == "POST":
 
