@@ -2,9 +2,8 @@ import json
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.core.paginator import Paginator
@@ -12,10 +11,16 @@ from django.core.paginator import Paginator
 from .models import User, Post, Follower
 
 
+"""
+Index view
+"""
 def index(request):
     return render(request, "network/index.html")
 
 
+"""
+Create post view
+"""
 @login_required
 def create_post(request):
     # Ensure POST request
@@ -36,6 +41,9 @@ def create_post(request):
     return JsonResponse({"msg": "post created!"}, status=201)
 
 
+"""
+Posts view
+"""
 def posts(request, filter):
     # Check filter
     if filter == "all":
@@ -62,18 +70,24 @@ def posts(request, filter):
     paginator = Paginator(posts, 10)
     posts = paginator.get_page(page_num)
     
-    return JsonResponse([post.serialize() for post in posts], safe=False)
+    return JsonResponse([post.serialize() for post in posts], safe=False, status=200)
     
-
+    
+"""
+Profile View
+"""
 def profile(request, id):
     try:
         user = User.objects.get(pk=id)
     except User.DoesNotExist:
         return JsonResponse({"error": "user not found!"}, status=400)
     
-    return JsonResponse(user.serialize())
+    return JsonResponse(user.serialize(), status=200)
     
-    
+
+"""
+Login View
+"""
 def login_view(request):
     if request.method == "POST":
 
@@ -94,11 +108,17 @@ def login_view(request):
         return render(request, "network/login.html")
 
 
+"""
+Logout view
+"""
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
 
 
+"""
+Register view
+"""
 def register(request):
     if request.method == "POST":
         username = request.POST["username"]

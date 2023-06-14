@@ -4,11 +4,13 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
-# User
+"""
+User model
+"""
 class User(AbstractUser):
     
     def serialize(self):
-        posts = self.posts.all()
+        posts = self.posts.order_by("-posted_on").all()
         return {
             "username": self.username,
             "email": self.email,
@@ -18,7 +20,9 @@ class User(AbstractUser):
         }
 
 
-# Post
+"""
+Post model
+"""
 class Post(models.Model):
     content = models.CharField(max_length=1200, null=False, blank=False)
     posted_on = models.DateTimeField(default=datetime.datetime.now())
@@ -29,7 +33,7 @@ class Post(models.Model):
     def get_likes(self):
         return self.likes.count()
     
-    # Get comments
+    # Serialize comments
     def serialize_comments(self):
         comments = self.comments.all()
         list = []
@@ -55,7 +59,9 @@ class Post(models.Model):
         return f"A post created by {self.posted_by} on {self.posted_on}"
 
 
-# Follower
+"""
+Follower model
+"""
 class Follower(models.Model):
     followee = models.ForeignKey(User, on_delete=models.CASCADE, related_name="followers")
     follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name="followings")
@@ -68,7 +74,9 @@ class Follower(models.Model):
         return f"{self.follower} follows {self.followee}"
 
 
-# Comment
+"""
+Comment model
+"""
 class Comment(models.Model):
     text = models.CharField(max_length=500)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")
