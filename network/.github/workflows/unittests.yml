@@ -1,0 +1,17 @@
+name: Testing
+on: push
+
+jobs:
+  test_project:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Install pip
+        run: sudo apt install python3=pip
+
+      - name: Install requirements
+        run: pip install -r requirements.txt
+
+      - name: Execute tests
+        run: python manage.py test
