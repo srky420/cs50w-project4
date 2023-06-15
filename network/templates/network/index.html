@@ -4,9 +4,17 @@
 
 {% block body %}
     
-    
+    <div id="posts-view">
+        <form>
+            <div class="form-floating position-relative">
+                <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                <label for="floatingTextarea2" class="text-muted">Create Post</label>
+                <input class="btn btn-primary position-absolute" type="submit" value="Post">
+            </div>
+        </form>
+        <div id="posts"></div>
+    </div>
+    <div id="edit"></div>
+    <div id="profile"></div>
 
-{% endblock %}
-
-{% block script %}
 {% endblock %}
