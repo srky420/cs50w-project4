@@ -60,9 +60,9 @@ def posts(request, filter):
         posts = Post.objects.filter(pk__in=posts)
     else:
         return JsonResponse({"error": "filter not found!"}, status=400)
-    
+        
     posts = posts.order_by("-posted_on").all()
-    
+ 
     # Get page num from args
     page_num = request.GET.get("page")
     
@@ -70,7 +70,10 @@ def posts(request, filter):
     paginator = Paginator(posts, 10)
     posts = paginator.get_page(page_num)
     
-    return JsonResponse([post.serialize() for post in posts], safe=False, status=200)
+    return JsonResponse({"posts": [post.serialize() for post in posts], 
+                         "next": posts.next_page_number() if posts.has_next() else None,
+                         "previous": posts.previous_page_number() if posts.has_previous() else None,
+                         }, safe=False, status=200)
     
     
 """

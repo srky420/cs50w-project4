@@ -10,6 +10,7 @@
         <script src="{% static 'network/create-post.js' %}"></script>
         <script src="{% static 'network/load-posts.js' %}"></script>
         <script src="{% static 'network/load-profile.js' %}"></script>
+        <script src="{% static 'network/main.js' %}"></script>
         <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
     </head>
     <body>
@@ -25,11 +26,11 @@
                         </li>
                     {% endif %}
                     <li class="nav-item">
-                    <a class="nav-link" href="{% url 'index' %}" id="allposts-btn">All Posts</a>
+                    <a class="nav-link" href="#" id="allposts-btn">All Posts</a>
                     </li>
                     {% if user.is_authenticated %}
                         <li class="nav-item">
-                            <a class="nav-link" id="following-btn">Following</a>
+                            <a class="nav-link" href="#" id="following-btn">Following</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'logout' %}">Log Out</a>

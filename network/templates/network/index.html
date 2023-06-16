@@ -6,13 +6,17 @@
     
     <div id="posts-view">
         <form>
-            <div class="form-floating position-relative">
-                <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
-                <label for="floatingTextarea2" class="text-muted">Create Post</label>
-                <input class="btn btn-primary position-absolute" type="submit" value="Post">
+            <div class="form-floating">
+                <textarea class="form-control rounded-bottom-0" placeholder="Leave a comment here" id="post-content" style="height: 120px;"></textarea>
+                <label for="post-content" class="text-muted">What's on your mind?</label>
+                <input class="btn btn-primary rounded-top-0" type="submit" value="Create Post" id="create-post-btn">
             </div>
         </form>
         <div id="posts"></div>
+        <ul class="pagination">
+            <li class="page-item"><a href="#" id="prev-page-btn" class="page-link disabled">Previous</a></li>
+            <li class="page-item"><a href="#" id="next-page-btn" class="page-link disabled">Next</a></li>
+        </ul>
     </div>
     <div id="edit"></div>
     <div id="profile"></div>
