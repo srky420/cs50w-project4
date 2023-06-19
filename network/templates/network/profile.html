@@ -1,0 +1,19 @@
+{% extends "network/layout.html" %}
+
+{% block title %} Profile {% endblock %}
+
+{% block body %}
+
+    <h2>{{ user.username }}</h2>
+    <p class="text-muted">{{ user.email }}</p>
+    <small class="text-muted">Joined: {{ user.date_joined }}</small>
+    <p>
+        <strong>{{ user.get_followers_count }}</strong> Follower(s) 
+        <strong class="ms-2">{{ user.get_followings_count }}</strong> Following
+    </p>
+
+    <h2 class="my-3">Posts</h2>
+
+    {% include "network/posts.html" %}
+
+{% endblock %}

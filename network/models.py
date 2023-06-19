@@ -9,16 +9,15 @@ User model
 """
 class User(AbstractUser):
     
-    def serialize(self):
+    def get_posts(self):
         posts = self.posts.order_by("-posted_on").all()
-        return {
-            "username": self.username,
-            "email": self.email,
-            "followers": self.followers.count(),
-            "followings": self.followings.count(),
-            "posts": [post.serialize() for post in posts]
-        }
+        return posts
 
+    def get_followers_count(self):
+        return self.followers.count()
+
+    def get_followings_count(self):
+        return self.followings.count()
 
 """
 Post model

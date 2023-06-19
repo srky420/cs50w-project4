@@ -77,8 +77,17 @@ def create_post(request):
 Profile View
 """
 def profile(request, id):
-    pass
+    user = User.objects.get(pk=id)
 
+    if not user:
+        return HttpResponseRedirect(reverse("index"))
+    
+    posts = user.get_posts()
+
+    return render(request, "network/profile.html", {
+        "user": user,
+        "posts": posts
+    })
 
 """
 Posts view

@@ -3,39 +3,14 @@
 {% block title %}Index{% endblock %}
 
 {% block body %}
+    
+    {% if request.user.is_authenticated %}
 
-{% if request.user.is_authenticated %}
+    {% if request.path == "/followings" %}
+        <h2 class="my-3">Your Followings</h2>
+    {% endif %}
 
-<form action="{% url 'create-post' %}" method="post">
-    {% csrf_token %}
-    <div class="form-floating">
-        <textarea name="content" class="form-control rounded-bottom-0" placeholder="Leave a comment here"
-            style="height: 120px;"></textarea>
-        <label for="post-content" class="text-muted">What's on your mind?</label>
-        <input class="btn btn-primary rounded-top-0" type="submit" value="Create Post">
-    </div>
-</form>
-
-{% endif %}
-
-<h2 class="my-3">All Posts</h2>
-
-{% for post in posts %}
-
-<div class="card w-100 my-3">
-    <div class="card-body">
-        <h5 class="card-title">{{ post.posted_by }}</h5>
-        <small class="card-subtitle mb-2 text-body-secondary">{{ post.posted_on }}</small>
-        <p class="card-text my-3">{{ post.content }}</p>
-        <hr>
-        <a href="#" class="card-link">Like</a>
-        <a href="#" class="card-link">Comment</a>
-    </div>
-</div>
-
-{% empty %}
-
-<h3>No posts yet.</h3>
+    {% include "network/posts.html" %}
 
 {% endfor %}
 
