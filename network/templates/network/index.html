@@ -3,45 +3,52 @@
 {% block title %}Index{% endblock %}
 
 {% block body %}
-    
-    {% if request.user.is_authenticated %}
 
-        <form action="{% url 'create-post' %}" method="post">
-            {% csrf_token %}
-            <div class="form-floating">
-                <textarea name="content" class="form-control rounded-bottom-0" placeholder="Leave a comment here" style="height: 120px;"></textarea>
-                <label for="post-content" class="text-muted">What's on your mind?</label>
-                <input class="btn btn-primary rounded-top-0" type="submit" value="Create Post">
-            </div>
-        </form>
-    
-    {% endif %}
+{% if request.user.is_authenticated %}
 
-    <h2>All Posts</h2>
+<form action="{% url 'create-post' %}" method="post">
+    {% csrf_token %}
+    <div class="form-floating">
+        <textarea name="content" class="form-control rounded-bottom-0" placeholder="Leave a comment here"
+            style="height: 120px;"></textarea>
+        <label for="post-content" class="text-muted">What's on your mind?</label>
+        <input class="btn btn-primary rounded-top-0" type="submit" value="Create Post">
+    </div>
+</form>
 
-    {% for post in posts %}
+{% endif %}
 
-        <div class="card w-100 my-3">
-            <div class="card-body">
-                <h5 class="card-title">{{ post.posted_by }}</h5>
-                <small class="card-subtitle mb-2 text-body-secondary">{{ post.posted_on }}</small>
-                <p class="card-text">{{ post.content }}</p>
-                <hr>
-                <a href="#" class="card-link">Like</a>
-                <a href="#" class="card-link">Comment</a>
-            </div>
-        </div>
+<h2 class="my-3">All Posts</h2>
 
-    {% empty %}
+{% for post in posts %}
 
-        <h3>No posts yet.</h3>
+<div class="card w-100 my-3">
+    <div class="card-body">
+        <h5 class="card-title">{{ post.posted_by }}</h5>
+        <small class="card-subtitle mb-2 text-body-secondary">{{ post.posted_on }}</small>
+        <p class="card-text my-3">{{ post.content }}</p>
+        <hr>
+        <a href="#" class="card-link">Like</a>
+        <a href="#" class="card-link">Comment</a>
+    </div>
+</div>
 
-    {% endfor %}
+{% empty %}
 
-    <ul class="pagination">
-        <li class="page-item"><a href="#" id="prev-page-btn" class="page-link disabled">Previous</a></li>
-        <li class="page-item"><a href="#" id="current-page" class="page-link"></a></li>
-        <li class="page-item"><a href="#" id="next-page-btn" class="page-link disabled">Next</a></li>
-    </ul>
+<h3>No posts yet.</h3>
+
+{% endfor %}
+
+<ul class="pagination justify-content-center">
+    <li class="page-item">
+        <a href="{{ request.path }}?page={% if posts.has_previous %}{{ posts.previous_page_number }}{% else %}#{% endif %}"
+            class="page-link {% if not posts.has_previous %} disabled {% endif %}">Previous</a>
+    </li>
+    <li class="page-item"><a href="#" class="page-link">Page {{ posts.number }} of {{ posts.paginator.num_pages }}</a></li>
+    <li class="page-item">
+        <a href="{{ request.path }}?page={% if posts.has_next %}{{ posts.next_page_number }}{% else %}#{% endif %}"
+            class="page-link {% if not posts.has_next %} disabled {% endif %}">Next</a>
+    </li>
+</ul>
 
 {% endblock %}
