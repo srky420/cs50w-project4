@@ -15,30 +15,69 @@ from .models import User, Post, Follower
 Index view
 """
 def index(request):
-    return render(request, "network/index.html")
+    posts = Post.objects.all()
+    posts = posts.order_by("-posted_on")
+    
+    paginator = Paginator(posts, 10)
+    
+    page_num = request.GET.get("page")
+    
+    posts = paginator.get_page(page_num if page_num else 1)
+    
+    return render(request, "network/index.html", {
+        "posts": posts
+    })
+
+
+"""
+Followings view
+"""
+@login_required
+def followings(request):
+    followings = Follower.objects.filter(follower=request.user)
+    posts = []
+    
+    for f in followings:
+        for post in f.followee.posts.all():
+            posts.append(post.id)    
+
+    posts = Post.objects.filter(pk__in=posts)
+    posts = posts.order_by("-posted_on")
+    
+    paginator = Paginator(posts, 10)
+    
+    page_num = request.GET.get("page")
+    
+    posts = paginator.get_page(page_num if page_num else 1)
+    
+    return render(request, "network/index.html", {
+        "posts": posts
+    })
 
 
 """
 Create post view
 """
-@login_required
+@login_required(redirect_field_name="login")
 def create_post(request):
     # Ensure POST request
-    if request.method != "POST":
-        return JsonResponse({"msg": "POST request required!"}, status=400)
-    
-    # Load json data    
-    data = json.loads(request.body)
-    
-    # Check data has content
-    if not data["content"]:
-        return JsonResponse({"error": "post has no content!"}, status=400)
+    if request.method == "POST":
+        content = request.POST["content"]
 
-    # Create post
-    post = Post.objects.create(content=data["content"], posted_by=request.user)
-    post.save()
+        if not content:
+            return HttpResponseRedirect(reverse("index"))
+        
+        post = Post.objects.create(content=content, posted_by=request.user)
+        post.save()
+        
+        return HttpResponseRedirect(reverse("index"))
     
-    return JsonResponse({"msg": "post created!"}, status=201)
+    
+"""
+Profile View
+"""
+def profile(request, id):
+    pass
 
 
 """
@@ -73,21 +112,10 @@ def posts(request, filter):
     return JsonResponse({"posts": [post.serialize() for post in posts], 
                          "next": posts.next_page_number() if posts.has_next() else None,
                          "previous": posts.previous_page_number() if posts.has_previous() else None,
+                         "current": posts.number
                          }, safe=False, status=200)
     
     
-"""
-Profile View
-"""
-def profile(request, id):
-    try:
-        user = User.objects.get(pk=id)
-    except User.DoesNotExist:
-        return JsonResponse({"error": "user not found!"}, status=400)
-    
-    return JsonResponse(user.serialize(), status=200)
-    
-
 """
 Login View
 """

@@ -6,12 +6,6 @@
         <title>Social Network:{% block title %}{% endblock %}</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
         <link href="{% static 'network/styles.css' %}" rel="stylesheet">
-        {% block script %}{% endblock %}
-        <script src="{% static 'network/create-post.js' %}"></script>
-        <script src="{% static 'network/load-posts.js' %}"></script>
-        <script src="{% static 'network/load-profile.js' %}"></script>
-        <script src="{% static 'network/main.js' %}"></script>
-        <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
     </head>
     <body>
 
@@ -19,35 +13,35 @@
             <div class="container">
                 <a class="navbar-brand" href="#">Network</a>
                 <div>
-                <ul class="navbar-nav ms-auto gap-2">
-                    {% if user.is_authenticated %}
+                    <ul class="navbar-nav ms-auto gap-2">
+                        {% if user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="#"><strong>{{ user.username }}</strong></a>
+                            </li>
+                        {% endif %}
                         <li class="nav-item">
-                            <a class="nav-link" href="#"><strong>{{ user.username }}</strong></a>
+                        <a class="nav-link" href="{% url 'index' %}" id="allposts-btn">All Posts</a>
                         </li>
-                    {% endif %}
-                    <li class="nav-item">
-                    <a class="nav-link" href="#" id="allposts-btn">All Posts</a>
-                    </li>
-                    {% if user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" id="following-btn">Following</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
-                        </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'login' %}">Log In</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'register' %}">Register</a>
-                        </li>
-                    {% endif %}
-                </ul>
+                        {% if user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" id="following-btn">Following</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'login' %}">Log In</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'register' %}">Register</a>
+                            </li>
+                        {% endif %}
+                    </ul>
                 </div>
             </div>
-          </nav>
-        
+        </nav>
+
         <div class="container my-3">
             {% block body %}
             {% endblock %}

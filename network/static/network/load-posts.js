@@ -22,15 +22,25 @@ function load_posts(filter, page_num) {
             document.querySelector('#posts').innerHTML += html;
         })
 
-
+        document.querySelector('#current-page').innerHTML = data.current;
 
         if (data.next) {
-            document.querySelector('#next-page-btn').classList.toggle('disabled'); 
+            document.querySelector('#next-page-btn').classList.remove('disabled'); 
+            document.querySelector('#next-page-btn').addEventListener('click', () => load_posts(filter, data.next)); 
+        }
+        else {
+            document.querySelector('#next-page-btn').classList.add('disabled');
         }
 
         if (data.previous) {
-            document.querySelector('#prev-page-btn').classList.toggle('disabled');
+            document.querySelector('#prev-page-btn').classList.remove('disabled');
+            document.querySelector('#prev-page-btn').addEventListener('click', () => load_posts(filter, data.previous));
+
         }
+        else {
+            document.querySelector('#prev-page-btn').classList.add('disabled');
+        }
+
 
     })
     .catch(error => {

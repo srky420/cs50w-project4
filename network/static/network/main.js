@@ -3,5 +3,5 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('#following-btn').addEventListener('click', () => load_posts('followings'));
     document.querySelector('#create-post-btn').addEventListener('click', () => create_post());
 
-    load_posts("all", 1);
+    
 });

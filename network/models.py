@@ -32,6 +32,10 @@ class Post(models.Model):
     # Count likes
     def get_likes(self):
         return self.likes.count()
+
+    # Get comments
+    def get_comments(self):
+        return self.comments.all()
     
     # Serialize comments
     def serialize_comments(self):
