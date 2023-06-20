@@ -51,8 +51,8 @@ class ModelsTest(TestCase):
     def test_likes(self):
         p1 = Post.objects.get(pk=1)
         p2 = Post.objects.get(pk=2)
-        self.assertEqual(p1.get_likes(), 2)
-        self.assertEqual(p2.get_likes(), 0)
+        self.assertEqual(p1.count_likes(), 2)
+        self.assertEqual(p2.count_likes(), 0)
         
         
     # Test number of comments
