@@ -1,6 +1,6 @@
-function like(post_id, like_btn) {
+function like(like_btn) {
  
-    post_id = parseInt(post_id);
+    let post_id = parseInt(like_btn.dataset.post);
 
     // Disable like btn
     like_btn.classList.add('disabled');
