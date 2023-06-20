@@ -1,4 +1,4 @@
-{% for post in posts %}
+{% for post, like in zipped_list %}
 
         <div class="card w-100 my-3">
             <div class="card-body">
@@ -6,8 +6,27 @@
                 <small class="card-subtitle mb-2 text-body-secondary">{{ post.posted_on|timesince }} ago</small>
                 <p class="card-text my-3">{{ post.content }}</p>
                 <hr>
-                <p class="card-text"><a href="#" class="card-link">
-                    <i class="fa fa-thumbs-o-up me-1"></i></a> {{ post.count_likes }} <a href="#" class="card-link"><i class="fa fa-comment-o me-1"></i></a> {{ post.count_comments }}
+                <p class="card-text">
+
+                    {% if like %}
+
+                        <a href="#" class="card-link text-decoration-none">
+                            <i class="fa fa-thumbs-up me-1"></i>
+                        </a>
+                    
+                    {% else %}
+
+                        <a href="#" class="card-link text-decoration-none">
+                            <i class="fa fa-thumbs-o-up me-1"></i>
+                        </a>
+                    
+                    {% endif %}
+
+                    {{ post.count_likes }}
+                     
+                    <a href="#" class="card-link text-decoration-none">
+                        <i class="fa fa-comment-o me-1"></i>
+                    </a>{{ post.count_comments }}
                 </p>
             </div>
         </div>

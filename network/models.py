@@ -37,6 +37,13 @@ class Post(models.Model):
     def count_comments(self):
         return self.comments.count()
     
+    def check_like(self, user):
+        try: 
+            self.likes.get(pk=user.id)
+            return True
+        except:
+            return False
+    
     # Serialize comments
     def serialize_comments(self):
         comments = self.comments.all()

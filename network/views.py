@@ -24,8 +24,15 @@ def index(request):
     
     posts = paginator.get_page(page_num if page_num else 1)
     
+    likes = []
+    for post in posts:
+        likes.append(post.check_like(user=request.user))
+    
+    zipped_list = zip(posts, likes)
+    
     return render(request, "network/index.html", {
-        "posts": posts
+        "posts": posts,
+        "zipped_list": zipped_list
     })
 
 
@@ -50,7 +57,14 @@ def followings(request):
     
     posts = paginator.get_page(page_num if page_num else 1)
     
+    likes = []
+    for post in posts:
+        likes.append(post.check_like(user=request.user))
+        
+    zipped_list = zip(posts, likes)
+    
     return render(request, "network/index.html", {
+        "zipped_list": zipped_list,
         "posts": posts
     })
 
