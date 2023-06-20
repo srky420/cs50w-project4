@@ -5,9 +5,9 @@
 {% block body %}
 
     <h2>{{ user.username }}</h2>
-    <p class="text-muted">{{ user.email }}</p>
+    <p class="text-muted my-1">{{ user.email }}</p>
     <small class="text-muted">Joined: {{ user.date_joined }}</small>
-    <p>
+    <p class="my-1">
         <strong>{{ user.get_followers_count }}</strong> Follower(s) 
         <strong class="ms-2">{{ user.get_followings_count }}</strong> Following
     </p>

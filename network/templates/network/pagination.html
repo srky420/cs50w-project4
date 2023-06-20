@@ -1,16 +1,20 @@
-
-    <hr>
-
-    <ul class="pagination justify-content-center">
-        <li class="page-item">
-            <a href="{% if posts.has_previous %}{{ request.path }}?page={{ posts.previous_page_number }}{% else %}#{% endif %}" 
-                class="page-link {% if not posts.has_previous %} disabled {% endif %}">Previous</a>
-        </li>
-        <li class="page-item">
-            <a href="#" class="page-link">Page {{ posts.number }} of {{ posts.paginator.num_pages }}</a>
-        </li>
-        <li class="page-item">
-            <a href="{% if posts.has_next %}{{ request.path }}?page={{ posts.next_page_number }}{% else %}#{% endif %}" 
-                class="page-link {% if not posts.has_next %} disabled {% endif %}">Next</a>
-        </li>
-    </ul>
+<hr>
+<ul class="pagination justify-content-center">
+    <li class="page-item">
+        <a href="{% if posts.has_previous %}{{ request.path }}?page={{ posts.previous_page_number }}{% else %}#{% endif %}" 
+            class="page-link {% if not posts.has_previous %} disabled {% endif %}">Previous</a>
+    </li>
+    <li class="page-item">
+        <a href="#" class="page-link">
+            {% if posts.paginator.num_pages %}
+                Page {{ posts.number }} of {{ posts.paginator.num_pages }}
+            {% else %}
+                Page 1 of 1
+            {% endif %}
+        </a>
+    </li>
+    <li class="page-item">
+        <a href="{% if posts.has_next %}{{ request.path }}?page={{ posts.next_page_number }}{% else %}#{% endif %}" 
+            class="page-link {% if not posts.has_next %} disabled {% endif %}">Next</a>
+    </li>
+</ul>

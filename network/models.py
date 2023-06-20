@@ -28,13 +28,14 @@ class Post(models.Model):
     posted_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
     likes = models.ManyToManyField(User, blank=True, related_name="liked_posts")
 
-    # Count likes
-    def get_likes(self):
+    def count_likes(self):
         return self.likes.count()
 
-    # Get comments
     def get_comments(self):
         return self.comments.all()
+    
+    def count_comments(self):
+        return self.comments.count()
     
     # Serialize comments
     def serialize_comments(self):
