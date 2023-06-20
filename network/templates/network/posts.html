@@ -8,24 +8,21 @@
                 <hr>
                 <p class="card-text">
 
-                    {% if like %}
 
-                        <a href="#" class="card-link text-decoration-none">
-                            <i class="fa fa-thumbs-up me-1"></i>
-                        </a>
-                    
-                    {% else %}
+                    <a class="card-link text-decoration-none like-btn" data-post="{{ post.id }}">
 
-                        <a href="#" class="card-link text-decoration-none">
-                            <i class="fa fa-thumbs-o-up me-1"></i>
-                        </a>
-                    
-                    {% endif %}
+                        {% if like %}
+                            <i class="fa fa-thumbs-up"></i>
+                        {% else %}
+                            <i class="fa fa-thumbs-o-up"></i>
+                        {% endif %}
+                        <span class="post-id" hidden>{{ post.id }}</span>
+                    </a>
 
-                    {{ post.count_likes }}
+                    <span class="likes-count mx-2" id="post{{ post.id }}">{{ post.count_likes }}</span>
                      
-                    <a href="#" class="card-link text-decoration-none">
-                        <i class="fa fa-comment-o me-1"></i>
+                    <a href="#" class="card-link text-decoration-none mx-2">
+                        <i class="fa fa-comment-o"></i>
                     </a>{{ post.count_comments }}
                 </p>
             </div>

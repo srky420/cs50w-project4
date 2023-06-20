@@ -97,11 +97,47 @@ def profile(request, id):
         return HttpResponseRedirect(reverse("index"))
     
     posts = user.get_posts()
+    posts = posts.order_by("-posted_on")
+    
+    paginator = Paginator(posts, 10)
+    
+    page_num = request.GET.get("page")
+    
+    posts = paginator.get_page(page_num if page_num else 1)
+    
+    likes = []
+    for post in posts:
+        likes.append(post.check_like(user=request.user))
+        
+    zipped_list = zip(posts, likes)
 
     return render(request, "network/profile.html", {
         "user": user,
-        "posts": posts
+        "posts": posts,
+        "zipped_list": zipped_list
     })
+
+
+"""
+Like func
+"""
+@login_required
+def like(request, post_id):   
+    try:
+        post = Post.objects.get(pk=post_id)
+        
+        if post.check_like(user=request.user):
+            post.likes.remove(request.user)
+            liked = False
+        else:
+            post.likes.add(request.user)
+            liked = True
+        
+        return JsonResponse({"msg": "Like toggled!", "liked": liked}, status=201)
+    
+    except Post.DoesNotExist:
+        return JsonResponse({"error": "Post not found!"}, status=400)
+
 
 """
 Posts view

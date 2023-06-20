@@ -1,3 +1,17 @@
 .nav-item .active {
     border-bottom: 1px solid black;
 }
+
+#post-id {
+    display: none;
+}
+
+.like-btn:hover {
+    cursor: pointer;
+}
+
+.disabled {
+    pointer-events: none;
+    cursor: default;
+    color: grey;
+}
