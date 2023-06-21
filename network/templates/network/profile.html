@@ -8,15 +8,15 @@
     <p class="text-muted my-1">{{ user.email }}</p>
     <small class="text-muted">Joined: {{ user.date_joined }}</small>
     <p class="my-1">
-        <strong>{{ user.get_followers_count }}</strong> Follower(s) 
+        <strong id="follower-count">{{ user.get_followers_count }}</strong> Follower(s) 
         <strong class="ms-2">{{ user.get_followings_count }}</strong> Following
     </p>
 
     {% if request.user.is_authenticated and user != request.user %}
         {% if is_following %}
-            <button class="btn btn-outline-primary my-3" id="follow-btn"><i class="fa fa-close"></i> Unfollow</button>
+            <button class="btn btn-primary my-3" id="follow-btn" data-id="{{ user.id }}"><i class="fa fa-close"></i> Unfollow</button>
         {% else %}
-            <button class="btn btn-primary my-3" id="follow-btn"><i class="fa fa-check"></i> Follow</button>
+            <button class="btn btn-primary my-3" id="follow-btn" data-id="{{ user.id }}"><i class="fa fa-check"></i> Follow</button>
         {% endif %}
     {% endif %}
 

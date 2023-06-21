@@ -1,7 +1,7 @@
 {% for post, like in zipped_list %}
 
         <div class="card w-100 my-3">
-            <div class="card-body">
+            <div class="card-body position-relative">
                 <h5 class="card-title"><a href="{% url 'profile' post.posted_by.id %}" class="card-link">{{ post.posted_by }}</a></h5>
                 <small class="card-subtitle mb-2 text-body-secondary">{{ post.posted_on|timesince }} ago</small>
                 <p class="card-text my-3">{{ post.content }}</p>
@@ -25,6 +25,18 @@
                         <i class="fa fa-comment-o"></i>
                     </a>{{ post.count_comments }}
                 </p>
+                <!-- Settings dropdown -->
+                {% if post.posted_by == request.user %}
+                    <div class="dropdown position-absolute top-0" style="right: 0;">
+                        <button class="btn btn-light dropdown-toggle bg-transparent" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Edit</a></li>
+                            <li><a class="dropdown-item" href="#">Delete</a></li>
+                        </ul>
+                    </div>
+                {% endif %}
             </div>
         </div>
 
