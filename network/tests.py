@@ -146,5 +146,71 @@ class ViewsTest(TestCase):
 
     # Test profile page
     def test_profile_page(self):
-        pass
+        c = Client()
+        user = User.objects.get(username="Harry")
+        max_id = User.objects.order_by("-id").first()
+        
+        # Test invalid profile
+        response = c.get(f"/profile/{max_id.id + 1}")
+        self.assertEqual(response.status_code, 302)
+        
+        # Test profile without login
+        response = c.get(f"/profile/{user.id}")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["user"], user)
+        self.assertFalse(response.context["is_following"])
+        
+        # Test profile with login and follow
+        c.login(username="Ron", password="12345")
+        response = c.get(f"/profile/{user.id}")
+        self.assertTrue(response.context["is_following"])
+        
+        
+    # Test like/unlike
+    def test_like_unlike(self):
+        c = Client()
+        post = Post.objects.get(pk=1)
+        max_id = Post.objects.order_by("-id").first()
+        
+        response = c.get(f"/like/{post.id}")
+        self.assertEqual(response.status_code, 302)
+        
+        c.login(username="Ron", password="12345")
+        
+        response = c.get(f"/like/{max_id.id + 1}")
+        self.assertEqual(response.status_code, 400)
+        
+        response = c.get(f"/like/{post.id}")
+        self.assertEqual(response.status_code, 201)
+        self.assertTrue(response.json()["liked"])
+        
+        response = c.get(f"/like/{post.id}")
+        self.assertEqual(response.status_code, 201)
+        self.assertFalse(response.json()["liked"])
+        
     
+    # Test follow/unfollow
+    def test_follow_unfollow(self):
+        c = Client()
+        user = User.objects.get(username="Harry")
+        max_id = User.objects.order_by("-id").first()
+        
+        c.login(username="Ron", password="12345")
+        
+        # Test invalid user follow
+        response = c.get(f"/profile/{max_id.id + 1}/follow")
+        self.assertEqual(response.status_code, 400)
+        
+        # Test self follow i.e. invalid follow
+        ron = User.objects.get(username="Ron")
+        response = c.get(f"/profile/{ron.id}/follow")
+        self.assertEqual(response.json()["error"], "Invalid follow!")
+        self.assertEqual(response.status_code, 400)
+        
+        # Test unfollow toggle as Ron already follows Harry
+        response = c.get(f"/profile/{user.id}/follow")
+        self.assertFalse(response.json()["follow"])
+        
+        # Test follow toggle
+        response = c.get(f"/profile/{user.id}/follow")
+        self.assertTrue(response.json()["follow"])

@@ -13,7 +13,6 @@ function like(like_btn) {
             like_btn.classList.remove('disabled');
 
             let likes_count = parseInt(document.querySelector(`#post${post_id}`).innerHTML);
-            console.log(likes_count);
 
             // Increase/Decrease likes count
             if (data.liked) {

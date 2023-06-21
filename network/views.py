@@ -90,10 +90,10 @@ def create_post(request):
 """
 Profile View
 """
-def profile(request, id):
-    user = User.objects.get(pk=id)
-
-    if not user:
+def profile(request, user_id):
+    try:
+        user = User.objects.get(pk=user_id)
+    except User.DoesNotExist:
         return HttpResponseRedirect(reverse("index"))
     
     posts = user.get_posts()
@@ -111,10 +111,19 @@ def profile(request, id):
         
     zipped_list = zip(posts, likes)
 
+    is_following = False
+    try:
+        if (request.user.is_authenticated):
+            Follower.objects.get(followee=user, follower=request.user)
+            is_following = True
+    except Follower.DoesNotExist:
+        is_following = False
+
     return render(request, "network/profile.html", {
         "user": user,
         "posts": posts,
-        "zipped_list": zipped_list
+        "zipped_list": zipped_list,
+        "is_following": is_following
     })
 
 
@@ -125,18 +134,45 @@ Like func
 def like(request, post_id):   
     try:
         post = Post.objects.get(pk=post_id)
-        
-        if post.check_like(user=request.user):
-            post.likes.remove(request.user)
-            liked = False
-        else:
-            post.likes.add(request.user)
-            liked = True
-        
-        return JsonResponse({"msg": "Like toggled!", "liked": liked}, status=201)
-    
     except Post.DoesNotExist:
         return JsonResponse({"error": "Post not found!"}, status=400)
+        
+    if post.check_like(user=request.user):
+        post.likes.remove(request.user)
+        liked = False
+    else:
+        post.likes.add(request.user)
+        liked = True
+    
+    return JsonResponse({"msg": "Like toggled!", "liked": liked}, status=201)
+    
+
+"""
+Follow func
+"""
+@login_required
+def follow(request, user_id):
+    try:
+        user = User.objects.get(pk=user_id)
+    except User.DoesNotExist:
+        return JsonResponse({"error": "User does not exist!"}, status=400)
+    
+    try:
+        follower = Follower.objects.get(followee=user, follower=request.user)
+        follower.delete()
+        follow = False
+        return JsonResponse({"msg": "Follow toggled!", "follow": follow}, status=201)
+        
+    except Follower.DoesNotExist:
+        follower = Follower.objects.create(followee=user, follower=request.user)
+
+        if not follower.is_valid_follow():
+            follower.delete()
+            return JsonResponse({"error": "Invalid follow!"}, status=400)
+
+        follower.save()
+        follow = True
+        return JsonResponse({"msg": "Follow toggled!", "follow": follow}, status=201)
 
 
 """
