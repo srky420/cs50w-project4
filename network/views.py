@@ -176,6 +176,34 @@ def follow(request, user_id):
 
 
 """
+Edit post func
+"""
+@login_required
+def edit(request, post_id):
+    if request.method != "PUT":
+        return JsonResponse({"error": "PUT request required!"}, status=400)
+    
+    try:
+        post = Post.objects.get(pk=post_id)
+    except Post.DoesNotExist:
+        return JsonResponse({"error": "Post does not exist"}, status=400)
+    
+    if post.posted_by != request.user:
+        return JsonResponse({"error": "Post edit forbidden"}, status=403)
+    
+    data = json.loads(request.body)
+    content = data.get("content")
+    
+    if not content:
+        return JsonResponse({"error": "Content required!"}, status=400)
+    
+    post.content = content
+    post.save()
+    
+    return JsonResponse({"msg": "Post updated!"}, status=204)
+
+
+"""
 Posts view
 """
 def posts(request, filter):
@@ -249,10 +277,15 @@ def register(request):
     if request.method == "POST":
         username = request.POST["username"]
         email = request.POST["email"]
-
-        # Ensure password matches confirmation
         password = request.POST["password"]
         confirmation = request.POST["confirmation"]
+
+        if not username or not email or not password or not confirmation:
+            return render(request, "network/register.html", {
+                "message": "Input fields required."
+            })
+
+        # Ensure password matches confirmation
         if password != confirmation:
             return render(request, "network/register.html", {
                 "message": "Passwords must match."

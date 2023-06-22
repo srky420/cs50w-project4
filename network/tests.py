@@ -214,3 +214,33 @@ class ViewsTest(TestCase):
         # Test follow toggle
         response = c.get(f"/profile/{user.id}/follow")
         self.assertTrue(response.json()["follow"])
+        
+
+    # Test edit post
+    def test_edit_post(self):
+        c = Client()
+        c.login(username="Harry", password="12345")
+        rons_post = Post.objects.filter(posted_by=User.objects.get(username="Ron")).first()
+        harrys_post = Post.objects.filter(posted_by=User.objects.get(username="Harry")).first()
+        max_id = Post.objects.order_by("-id").first()
+        
+        # Test GET request
+        response = c.get(f"/edit/{harrys_post.id}")
+        self.assertEqual(response.status_code, 400)
+        
+        # Test POST request
+        response = c.post(path=f"/edit/{harrys_post.id}", data={"content": "Edited post"}, content_type="application/json")
+        self.assertEqual(response.status_code, 400)
+        
+        # Test invalid post
+        response = c.put(path=f"/edit/{max_id.id + 1}", data={"content": "Edited post"}, content_type="application/json")
+        self.assertEqual(response.status_code, 400)
+        
+        # Test forbidden edit request
+        response = c.put(path=f"/edit/{rons_post.id}", data={"content": "Edited post"}, content_type="application/json")
+        self.assertEqual(response.status_code, 403)
+        
+        # Test valid request
+        response = c.put(path=f"/edit/{harrys_post.id}", data={"content": "Edited post"}, content_type="application/json")
+        self.assertEqual(response.status_code, 204)
+        
