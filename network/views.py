@@ -3,7 +3,7 @@ import json
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.core.paginator import Paginator
@@ -192,15 +192,14 @@ def edit(request, post_id):
         return JsonResponse({"error": "Post edit forbidden"}, status=403)
     
     data = json.loads(request.body)
-    content = data.get("content")
     
-    if not content:
+    if not data.get("content"):
         return JsonResponse({"error": "Content required!"}, status=400)
     
-    post.content = content
+    post.content = data["content"]
     post.save()
     
-    return JsonResponse({"msg": "Post updated!"}, status=204)
+    return HttpResponse(status=204)
 
 
 """
