@@ -1,41 +1,57 @@
 {% for post, like in zipped_list %}
 
-        <div class="card w-100 my-3">
+        <div class="card w-100 my-3" id="post{{ post.id }}">
             <div class="card-body position-relative">
                 <h5 class="card-title"><a href="{% url 'profile' post.posted_by.id %}" class="card-link">{{ post.posted_by }}</a></h5>
                 <small class="card-subtitle mb-2 text-body-secondary">{{ post.posted_on|timesince }} ago</small>
-                <p class="card-text my-3">{{ post.content }}</p>
+                <p class="card-text my-3 post-content">{{ post.content }}</p>
                 <hr>
                 <p class="card-text">
-
-
                     <a class="card-link text-decoration-none like-btn" data-post="{{ post.id }}">
-
                         {% if like %}
                             <i class="fa fa-thumbs-up"></i>
                         {% else %}
                             <i class="fa fa-thumbs-o-up"></i>
                         {% endif %}
-                        <span class="post-id" hidden>{{ post.id }}</span>
                     </a>
-
-                    <span class="likes-count mx-2" id="post{{ post.id }}">{{ post.count_likes }}</span>
-                     
+                    <span class="likes-count mx-2 likes-count">{{ post.count_likes }}</span>
                     <a href="#" class="card-link text-decoration-none mx-2">
                         <i class="fa fa-comment-o"></i>
                     </a>{{ post.count_comments }}
                 </p>
                 <!-- Settings dropdown -->
                 {% if post.posted_by == request.user %}
+
                     <div class="dropdown position-absolute top-0" style="right: 0;">
                         <button class="btn btn-light dropdown-toggle bg-transparent" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fa fa-bars"></i>
                         </button>
+
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Edit</a></li>
-                            <li><a class="dropdown-item" href="#">Delete</a></li>
+                            <li><button class="dropdown-item edit-btn" data-id="{{ post.id }}" data-bs-toggle="modal" data-bs-target="#modal{{ post.id }}">Edit</button></li>
+                            <li><button class="dropdown-item delete-btn">Delete</button></li>
                         </ul>
                     </div>
+                    <!-- Modal -->
+                    <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="modal{{ post.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Post</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <textarea class="form-control edit-textarea" rows="7"></textarea>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal end -->
+                    
                 {% endif %}
             </div>
         </div>

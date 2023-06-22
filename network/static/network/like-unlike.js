@@ -12,18 +12,18 @@ function like(like_btn) {
             console.log(data.msg);
             like_btn.classList.remove('disabled');
 
-            let likes_count = parseInt(document.querySelector(`#post${post_id}`).innerHTML);
+            let likes_count = parseInt(document.querySelector(`#post${post_id}`).querySelector('.likes-count').innerHTML);
 
             // Increase/Decrease likes count
             if (data.liked) {
                 like_btn.innerHTML = `<i class="fa fa-thumbs-up"></i>`;
                 likes_count++;
-                document.querySelector(`#post${post_id}`).innerHTML = likes_count;
+                document.querySelector(`#post${post_id}`).querySelector('.likes-count').innerHTML = likes_count;
             }
             else {
                 like_btn.innerHTML = `<i class="fa fa-thumbs-o-up"></i>`;
                 likes_count--;
-                document.querySelector(`#post${post_id}`).innerHTML = likes_count;
+                document.querySelector(`#post${post_id}`).querySelector('.likes-count').innerHTML = likes_count;
             }
         })
         .catch(error => {
