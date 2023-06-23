@@ -4,7 +4,13 @@
 
 {% block body %}
 
-    <h2 class="p-3 bg-body-tertiary border-bottom">Profile</h2>
+    <h3 class="p-3 bg-body-tertiary bg-opacity-75 m-0 border-bottom sticky-top">
+        {% if user == request.user %}
+            Your Profile
+        {% else %}
+            Profile
+        {% endif %}
+    </h3>
 
     <div class="p-3">
         <h5>{{ user.username }}</h5>
@@ -25,7 +31,7 @@
         
     </div>  
     <hr>
-    <h2 class="mx-3">Posts</h2>
+    <h3 class="mx-3">Posts</h3>
 
     {% include "network/posts.html" %}
 

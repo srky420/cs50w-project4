@@ -6,14 +6,14 @@
     
     {% if request.path == "/followings" %}
 
-        <h2 class="p-3 bg-body-tertiary m-0 border-bottom">Your Followings</h2>
+        <h3 class="p-3 bg-body-tertiary bg-opacity-75 m-0 border-bottom sticky-top">Your Followings</h3>
 
     {% elif request.path == "/" %}
-
-        <h2 class="p-3 bg-body-tertiary m-0 border-bottom">All Posts</h2>
+    
+        <h3 class="p-3 bg-body-tertiary bg-opacity-75 m-0 border-bottom sticky-top">All Posts</h3>
 
         {% if request.user.is_authenticated %}
-
+ 
             <form action="{% url 'create-post' %}" method="post" class="text-end mb-3">
                 {% csrf_token %}
                 <div class="form-floating">
