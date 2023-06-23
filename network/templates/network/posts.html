@@ -2,12 +2,15 @@
 
         <div class="card w-100 border-0" id="post{{ post.id }}">
             <div class="row">
+                <!-- Profile pic -->
                 <div class="col-1 m-3">
                     <img class="post-profile-pic" src="{{ post.posted_by.profile_pic.url }}" alt="profile-pic">
                 </div>
-                <div class="col-9 card-body position-relative">
+                <!-- Post -->
+                <div class="col-9 card-body position-relative px-lg-2 px-md-3">
                     <h5 class="card-title my-0">
-                        <a href="{% url 'profile' post.posted_by.id %}" class="link-dark link-underline-opacity-0 link-underline-opacity-100-hover">{{ post.posted_by }}</a>
+                        <a href="{% url 'profile' post.posted_by.id %}" 
+                            class="link-dark link-underline-opacity-0 link-underline-opacity-100-hover">{{ post.posted_by }}</a>
                     </h5>
                     <small class="card-subtitle mb-2 text-body-secondary">{{ post.posted_on|timesince }} ago</small>
                     <p class="card-text my-3 post-content">{{ post.content }}</p>
@@ -20,14 +23,37 @@
                             {% endif %}
                         </a>
                         <span class="likes-count mx-2 likes-count">{{ post.count_likes }}</span>
-                        <a href="#" class="card-link text-decoration-none mx-2">
+                        <!-- Comment toggle -->
+                        <a href="#commentCollapse{{ post.id }}" class="card-link text-decoration-none mx-2" data-bs-toggle="collapse" 
+                            role="button" aria-expanded="false" aria-controls="commentCollapse{{ post.id }}">
                             <i class="fa fa-comment-o"></i>
                         </a>{{ post.count_comments }}
                     </p>
+                    <!-- Comments -->
+                    <ul class="list-unstyled collapse" id="commentCollapse{{ post.id }}">
+                        <h6 class="mb-3">Comments</h6>
+                        {% for comment in post.get_comments %}
+                            <li>
+                                <div class="row">
+                                    <div class="col-1 me-sm-2 mt-1">
+                                        <img class="comment-profile-pic" src="{{ comment.owner.profile_pic.url }}" alt="profile-pic">
+                                    </div>
+                                    <div class="col-10">
+                                        <a href="{% url 'profile' comment.owner.id %}" class="h6 link-dark link-underline-opacity-0 link-underline-opacity-100-hover">{{ comment.owner }}</a>
+                                        <p>{{ comment.text }}</p>
+                                    </div>
+                                </div>
+                            </li>
+                        {% empty %}
+                            <li>No comments yet.</li>
+                        {% endfor %}
+                    </ul>
+                    <!-- Comments end -->
+
                     <!-- Settings dropdown -->
                     {% if post.posted_by == request.user %}
 
-                        <div class="dropdown position-absolute top-0" style="right: 10px;">
+                        <div class="dropdown position-absolute" style="top: 10px; right: 20px;">
                             <button class="btn btn-light dropdown-toggle bg-transparent" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa fa-bars"></i>
                             </button>
@@ -56,18 +82,14 @@
                             </div>
                         </div>
                         <!-- Modal end -->
-                        
                     {% endif %}
                 </div>
             </div>
         </div>
-
         <hr class="my-0">
 
 {% empty %}
-
     <h4 class="p-3">No posts yet.</h4>
-
 {% endfor %}
 
 {% include "network/pagination.html" %}

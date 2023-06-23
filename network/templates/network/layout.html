@@ -16,13 +16,10 @@
 
         <div class="container position-relative">
             <div class="row">
-                <div class="col-3 position-sticky min-vh-100 border-end" style="top: 0; left: 0;">
+                <!-- Sidebar -->
+                <div class="col-3 position-sticky min-vh-100 h-100 border-end" style="top: 0; left: 0;">
                     <h4 class="text-center my-3">Network</h4>
                     <ul class="list-unstyled text-center my-5">
-                        {% if request.user.is_authenticated %}
-                            
-                        {% endif %}
-                        
                         {% with request.resolver_match.url_name as url_name %}
                             <li class="my-3">
                                 <a class="btn btn-lg rounded-5 {% if url_name == 'index' %}active{% endif %}" href="{% url 'index' %}">All Posts</a>
@@ -48,14 +45,22 @@
                         {% endwith %}
                     </ul>
                 </div>
-                <div class="col-6 p-0 min-vh-100">
+                <!-- Sidebar end -->
+
+                <!-- Main body -->
+                <div class="col-lg-6 col-sm-8 p-0 min-vh-100">
                     {% block body %}
                     {% endblock %}
                 </div>
-                <div class="col-3 border-start">
+                <!-- Main body end -->
+
+                <!-- Right sidebar -->
+                <div class="col-lg-3 col-sm-1 border-start">
                     {% block sidebar %}
                     {% endblock %}
                 </div>
+                <!-- Right sidebar end -->
+
             </div>
         </div>
 

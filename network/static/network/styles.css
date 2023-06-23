@@ -34,3 +34,14 @@
     border-radius: 50%;
     object-fit: cover;
 }
+
+.comment-profile-pic {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.post-content {
+    white-space: pre-line;
+}
