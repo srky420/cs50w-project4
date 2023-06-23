@@ -7,7 +7,7 @@
                     <img class="post-profile-pic" src="{{ post.posted_by.profile_pic.url }}" alt="profile-pic">
                 </div>
                 <!-- Post -->
-                <div class="col-9 card-body position-relative px-lg-2 px-md-3">
+                <div class="col-9 card-body position-relative me-2">
                     <h5 class="card-title my-0">
                         <a href="{% url 'profile' post.posted_by.id %}" 
                             class="link-dark link-underline-opacity-0 link-underline-opacity-100-hover">{{ post.posted_by }}</a>
@@ -32,6 +32,10 @@
                     <!-- Comments -->
                     <ul class="list-unstyled collapse" id="commentCollapse{{ post.id }}">
                         <h6 class="mb-3">Comments</h6>
+                        <form class="text-end">
+                            <input class="form-control form-control-sm mb-1" type="text" name="comment" placeholder="Add comment">
+                            <input class="btn btn-primary btn-sm" type="submit" value="Comment">
+                        </form>
                         {% for comment in post.get_comments %}
                             <li>
                                 <div class="row">
