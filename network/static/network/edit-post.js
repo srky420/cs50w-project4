@@ -29,7 +29,7 @@ function save(content, post, post_id) {
             'X-CSRFToken': csrf_token,
             'Content-Type': 'application/json'
         },
-        mode: "same-origin",
+        mode: 'same-origin',
         body: JSON.stringify({
             content: content
         })

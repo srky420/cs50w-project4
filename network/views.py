@@ -278,6 +278,9 @@ def register(request):
         email = request.POST["email"]
         password = request.POST["password"]
         confirmation = request.POST["confirmation"]
+        profile_pic = None
+        if request.FILES.get("profilepic"):
+            profile_pic = request.FILES["profilepic"]
 
         if not username or not email or not password or not confirmation:
             return render(request, "network/register.html", {
@@ -292,7 +295,11 @@ def register(request):
 
         # Attempt to create new user
         try:
-            user = User.objects.create_user(username, email, password)
+            if profile_pic is not None:
+                user = User.objects.create_user(username, email, password, profile_pic=profile_pic)
+            else:
+                user = User.objects.create_user(username, email, password)
+                
             user.save()
         except IntegrityError:
             return render(request, "network/register.html", {

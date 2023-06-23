@@ -8,6 +8,7 @@ from django.db import models
 User model
 """
 class User(AbstractUser):
+    profile_pic = models.ImageField(upload_to="images/", default="images/default-profile-pic.jpg")
     
     def get_posts(self):
         posts = self.posts.order_by("-posted_on").all()
@@ -18,6 +19,7 @@ class User(AbstractUser):
 
     def get_followings_count(self):
         return self.followings.count()
+
 
 """
 Post model

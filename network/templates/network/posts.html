@@ -1,59 +1,64 @@
 {% for post, like in zipped_list %}
 
         <div class="card w-100 border-0" id="post{{ post.id }}">
-            <div class="card-body position-relative">
-                <h5 class="card-title">
-                    <a href="{% url 'profile' post.posted_by.id %}" class="link-dark link-underline-opacity-0 link-underline-opacity-100-hover">{{ post.posted_by }}</a>
-                </h5>
-                <small class="card-subtitle mb-2 text-body-secondary">{{ post.posted_on|timesince }} ago</small>
-                <p class="card-text my-3 post-content">{{ post.content }}</p>
-                <p class="card-text">
-                    <a class="text-decoration-none like-btn" data-post="{{ post.id }}">
-                        {% if like %}
-                            <i class="fa fa-thumbs-up"></i>
-                        {% else %}
-                            <i class="fa fa-thumbs-o-up"></i>
-                        {% endif %}
-                    </a>
-                    <span class="likes-count mx-2 likes-count">{{ post.count_likes }}</span>
-                    <a href="#" class="card-link text-decoration-none mx-2">
-                        <i class="fa fa-comment-o"></i>
-                    </a>{{ post.count_comments }}
-                </p>
-                <!-- Settings dropdown -->
-                {% if post.posted_by == request.user %}
+            <div class="row">
+                <div class="col-1 m-3">
+                    <img class="post-profile-pic" src="{{ post.posted_by.profile_pic.url }}" alt="profile-pic">
+                </div>
+                <div class="col-9 card-body position-relative">
+                    <h5 class="card-title my-0">
+                        <a href="{% url 'profile' post.posted_by.id %}" class="link-dark link-underline-opacity-0 link-underline-opacity-100-hover">{{ post.posted_by }}</a>
+                    </h5>
+                    <small class="card-subtitle mb-2 text-body-secondary">{{ post.posted_on|timesince }} ago</small>
+                    <p class="card-text my-3 post-content">{{ post.content }}</p>
+                    <p class="card-text">
+                        <a class="text-decoration-none like-btn" data-post="{{ post.id }}">
+                            {% if like %}
+                                <i class="fa fa-thumbs-up"></i>
+                            {% else %}
+                                <i class="fa fa-thumbs-o-up"></i>
+                            {% endif %}
+                        </a>
+                        <span class="likes-count mx-2 likes-count">{{ post.count_likes }}</span>
+                        <a href="#" class="card-link text-decoration-none mx-2">
+                            <i class="fa fa-comment-o"></i>
+                        </a>{{ post.count_comments }}
+                    </p>
+                    <!-- Settings dropdown -->
+                    {% if post.posted_by == request.user %}
 
-                    <div class="dropdown position-absolute top-0" style="right: 0;">
-                        <button class="btn btn-light dropdown-toggle bg-transparent" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa fa-bars"></i>
-                        </button>
+                        <div class="dropdown position-absolute top-0" style="right: 10px;">
+                            <button class="btn btn-light dropdown-toggle bg-transparent" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa fa-bars"></i>
+                            </button>
 
-                        <ul class="dropdown-menu">
-                            <li><button class="dropdown-item edit-btn" data-id="{{ post.id }}" data-bs-toggle="modal" data-bs-target="#modal{{ post.id }}">Edit</button></li>
-                            <li><button class="dropdown-item delete-btn">Delete</button></li>
-                        </ul>
-                    </div>
-                    <!-- Modal -->
-                    <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="modal{{ post.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Post</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <textarea class="form-control edit-textarea" rows="7"></textarea>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary close-btn" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary save-btn">Save changes</button>
+                            <ul class="dropdown-menu">
+                                <li><button class="dropdown-item edit-btn" data-id="{{ post.id }}" data-bs-toggle="modal" data-bs-target="#modal{{ post.id }}">Edit</button></li>
+                                <li><button class="dropdown-item delete-btn">Delete</button></li>
+                            </ul>
+                        </div>
+                        <!-- Modal -->
+                        <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="modal{{ post.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Post</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <textarea class="form-control edit-textarea" rows="7"></textarea>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary close-btn" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary save-btn">Save changes</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- Modal end -->
-                    
-                {% endif %}
+                        <!-- Modal end -->
+                        
+                    {% endif %}
+                </div>
             </div>
         </div>
 
@@ -61,7 +66,7 @@
 
 {% empty %}
 
-    <h3 class="my-3">No posts yet.</h3>
+    <h4 class="p-3">No posts yet.</h4>
 
 {% endfor %}
 
