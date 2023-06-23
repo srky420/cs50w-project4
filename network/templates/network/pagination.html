@@ -1,5 +1,4 @@
-<hr>
-<ul class="pagination justify-content-center">
+<ul class="pagination justify-content-center my-3">
     <li class="page-item">
         <a href="{% if posts.has_previous %}{{ request.path }}?page={{ posts.previous_page_number }}{% else %}#{% endif %}" 
             class="page-link {% if not posts.has_previous %} disabled {% endif %}">Previous</a>

@@ -2,13 +2,13 @@
 
 {% block body %}
 
-    <h2 class="text-center my-3">Register</h2>
+    <h2 class="p-3 bg-body-tertiary border-bottom">Register</h2>
 
     {% if message %}
         <div class="msg">{{ message }}</div>
     {% endif %}
 
-    <form action="{% url 'register' %}" method="post" class="text-center">
+    <form action="{% url 'register' %}" method="post" class="text-center m-3">
         {% csrf_token %}
         <input class="form-control mb-3" autofocus type="text" name="username" placeholder="Username">
         <input class="form-control mb-3" type="email" name="email" placeholder="Email Address">

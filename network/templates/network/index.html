@@ -4,21 +4,27 @@
 
 {% block body %}
     
-    {% if request.user.is_authenticated and request.path != "/followings" %}
-
-    <form action="{% url 'create-post' %}" method="post">
-        {% csrf_token %}
-        <div class="form-floating">
-            <textarea name="content" class="form-control rounded-bottom-0" placeholder="Leave a comment here" style="height: 120px;"></textarea>
-            <label for="post-content" class="text-muted">What's on your mind?</label>
-            <input class="btn btn-primary rounded-top-0" type="submit" value="Create Post">
-        </div>
-    </form>
-
-    {% endif %}
-
     {% if request.path == "/followings" %}
-        <h2 class="my-3">Your Followings</h2>
+
+        <h2 class="p-3 bg-body-tertiary m-0 border-bottom">Your Followings</h2>
+
+    {% elif request.path == "/" %}
+
+        <h2 class="p-3 bg-body-tertiary m-0 border-bottom">All Posts</h2>
+
+        {% if request.user.is_authenticated %}
+
+            <form action="{% url 'create-post' %}" method="post" class="text-end mb-3">
+                {% csrf_token %}
+                <div class="form-floating">
+                    <textarea name="content" class="form-control border-end-0 border-start-0 rounded-0" placeholder="Leave a comment here" style="height: 120px;"></textarea>
+                    <label for="post-content" class="text-muted">What's on your mind?</label>
+                    <input class="btn btn-primary rounded-top-0 rounded-end-0" type="submit" value="Create Post">
+                </div>
+            </form>
+            
+        {% endif %}
+
     {% endif %}
 
     {% include "network/posts.html" %}

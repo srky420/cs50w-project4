@@ -14,45 +14,48 @@
     </head>
     <body>
 
-        <nav class="navbar navbar-expand-lg bg-transparent">
-            <div class="container">
-                <a class="navbar-brand" href="#">Network</a>
-                <div>
-                    <ul class="navbar-nav gap-2">
+        <div class="container">
+            <div class="row">
+                <div class="col-3 border-end">
+                    <h4 class="text-center my-3">Network</h4>
+                    <ul class="list-unstyled text-center my-5">
                         {% if request.user.is_authenticated %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'profile' request.user.id %}"><strong>{{ request.user.username }}</strong></a>
+                            <li class="my-3">
+                                <a class="btn btn-lg rounded-5" href="{% url 'profile' request.user.id %}">{{ request.user.username }}</a>
                             </li>
                         {% endif %}
                         
                         {% with request.resolver_match.url_name as url_name %}
-                            <li class="nav-item">
-                                <a class="nav-link {% if url_name == 'index' %}active{% endif %}" href="{% url 'index' %}">All Posts</a>
+                            <li class="my-3">
+                                <a class="btn btn-lg rounded-5 {% if url_name == 'index' %}active{% endif %}" href="{% url 'index' %}">All Posts</a>
                             </li>
                             {% if request.user.is_authenticated %}
-                                <li class="nav-item">
-                                    <a class="nav-link {% if url_name == 'followings' %}active{% endif %}" href="{% url 'followings' %}">Following</a>
+                                <li class="my-3">
+                                    <a class="btn btn-lg rounded-5 {% if url_name == 'followings' %}active{% endif %}" href="{% url 'followings' %}">Following</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                                <li class="my-5 py-5">
+                                    <a class="btn btn-danger btn-lg rounded-5" href="{% url 'logout' %}">Log Out</a>
                                 </li>
                             {% else %}
-                                <li class="nav-item">
-                                    <a class="nav-link {% if url_name == 'login' %}active{% endif %}" href="{% url 'login' %}">Log In</a>
+                                <li class="my-3">
+                                    <a class="btn btn-lg rounded-5 {% if url_name == 'login' %}active{% endif %}" href="{% url 'login' %}">Log In</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link {% if url_name == 'register' %}active{% endif %}" href="{% url 'register' %}">Register</a>
+                                <li class="my-3">
+                                    <a class="btn btn-lg rounded-5 {% if url_name == 'register' %}active{% endif %}" href="{% url 'register' %}">Register</a>
                                 </li>
                             {% endif %}
                         {% endwith %}
                     </ul>
                 </div>
+                <div class="col-6 p-0 min-vh-100">
+                    {% block body %}
+                    {% endblock %}
+                </div>
+                <div class="col-3 border-start">
+                    {% block sidebar %}
+                    {% endblock %}
+                </div>
             </div>
-        </nav>
-
-        <div class="container my-3">
-            {% block body %}
-            {% endblock %}
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
