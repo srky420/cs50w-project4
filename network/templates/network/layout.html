@@ -19,12 +19,6 @@
                 <div class="col-3 border-end">
                     <h4 class="text-center my-3">Network</h4>
                     <ul class="list-unstyled text-center my-5">
-                        {% if request.user.is_authenticated %}
-                            <li class="my-3">
-                                <a class="btn btn-lg rounded-5" href="{% url 'profile' request.user.id %}">{{ request.user.username }}</a>
-                            </li>
-                        {% endif %}
-                        
                         {% with request.resolver_match.url_name as url_name %}
                             <li class="my-3">
                                 <a class="btn btn-lg rounded-5 {% if url_name == 'index' %}active{% endif %}" href="{% url 'index' %}">All Posts</a>
@@ -32,6 +26,9 @@
                             {% if request.user.is_authenticated %}
                                 <li class="my-3">
                                     <a class="btn btn-lg rounded-5 {% if url_name == 'followings' %}active{% endif %}" href="{% url 'followings' %}">Following</a>
+                                </li>
+                                <li class="my-3">
+                                    <a class="btn btn-lg rounded-5 {% if url_name == 'profile' %}active{% endif %}" href="{% url 'profile' request.user.id %}">Profile</a>
                                 </li>
                                 <li class="my-5 py-5">
                                     <a class="btn btn-danger btn-lg rounded-5" href="{% url 'logout' %}">Log Out</a>
