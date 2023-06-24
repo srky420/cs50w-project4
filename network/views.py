@@ -8,7 +8,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.core.paginator import Paginator
 
-from .models import User, Post, Follower
+from .models import User, Post, Follower, Comment
 
 
 """
@@ -144,7 +144,11 @@ def like(request, post_id):
         post.likes.add(request.user)
         liked = True
     
-    return JsonResponse({"msg": "Like toggled!", "liked": liked}, status=201)
+    return JsonResponse({
+        "msg": "Like toggled!", 
+        "liked": liked,
+        "likes_count": post.count_likes()
+        }, status=201)
     
 
 """
@@ -161,7 +165,6 @@ def follow(request, user_id):
         follower = Follower.objects.get(followee=user, follower=request.user)
         follower.delete()
         follow = False
-        return JsonResponse({"msg": "Follow toggled!", "follow": follow}, status=201)
         
     except Follower.DoesNotExist:
         follower = Follower.objects.create(followee=user, follower=request.user)
@@ -172,7 +175,13 @@ def follow(request, user_id):
 
         follower.save()
         follow = True
-        return JsonResponse({"msg": "Follow toggled!", "follow": follow}, status=201)
+        
+    return JsonResponse({
+        "msg": "Follow toggled!", 
+        "follow": follow,
+        "followers_count": user.get_followers_count(),
+        "followings_count": request.user.get_followings_count()
+        }, status=201)
 
 
 """
@@ -183,23 +192,56 @@ def edit(request, post_id):
     if request.method != "PUT":
         return JsonResponse({"error": "PUT request required!"}, status=400)
     
+    # Try to get post
     try:
         post = Post.objects.get(pk=post_id)
     except Post.DoesNotExist:
         return JsonResponse({"error": "Post does not exist"}, status=400)
     
+    # Ensure user validity
     if post.posted_by != request.user:
         return JsonResponse({"error": "Post edit forbidden"}, status=403)
     
+    # Load request's body
     data = json.loads(request.body)
     
     if not data.get("content"):
         return JsonResponse({"error": "Content required!"}, status=400)
     
+    # Update post's content
     post.content = data["content"]
     post.save()
     
     return HttpResponse(status=204)
+
+
+"""
+Comment func
+"""
+@login_required
+def comment(request, post_id):
+    if request.method != "POST":
+        return JsonResponse({"error": "POST request required!"}, status=400)
+    
+    try:
+        post = Post.objects.get(pk=post_id)
+    except Post.DoesNotExist:
+        return JsonResponse({"error": "Post does not exist!"}, status=400)
+    
+    data = json.loads(request.body)
+    
+    if not data.get("comment"):
+        return JsonResponse({"error": "Comment not found!"}, status=400)
+
+    comment = Comment.objects.create(text=data["comment"], owner=request.user, post=post)
+    comment.save()
+    
+    return JsonResponse({
+        "msg": "Comment created!", 
+        "profile_pic_url": request.user.profile_pic.url, 
+        "username": request.user.username, 
+        "comment": comment.text,
+        "comments_count": post.count_comments()}, status=201)
 
 
 """

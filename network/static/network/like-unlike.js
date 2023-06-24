@@ -1,6 +1,7 @@
 function like(like_btn) {
  
-    let post_id = parseInt(like_btn.dataset.post);
+    const post_id = like_btn.dataset.id;
+    const post = document.querySelector(`#post${post_id}`);
 
     // Disable like btn
     like_btn.classList.add('disabled');
@@ -12,19 +13,16 @@ function like(like_btn) {
             console.log(data.msg);
             like_btn.classList.remove('disabled');
 
-            let likes_count = parseInt(document.querySelector(`#post${post_id}`).querySelector('.likes-count').innerHTML);
-
             // Increase/Decrease likes count
             if (data.liked) {
                 like_btn.innerHTML = `<i class="fa fa-thumbs-up"></i>`;
-                likes_count++;
-                document.querySelector(`#post${post_id}`).querySelector('.likes-count').innerHTML = likes_count;
             }
             else {
                 like_btn.innerHTML = `<i class="fa fa-thumbs-o-up"></i>`;
-                likes_count--;
-                document.querySelector(`#post${post_id}`).querySelector('.likes-count').innerHTML = likes_count;
             }
+
+            // Set likes count
+            post.querySelector('.likes-count').innerHTML = data.likes_count;
         })
         .catch(error => {
             console.log(error);

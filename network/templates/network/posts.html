@@ -4,7 +4,7 @@
             <div class="row">
                 <!-- Profile pic -->
                 <div class="col-1 m-3">
-                    <img class="post-profile-pic" src="{{ post.posted_by.profile_pic.url }}" alt="profile-pic">
+                    <img class="profile-pic profile-pic-md" src="{{ post.posted_by.profile_pic.url }}" alt="profile-pic">
                 </div>
                 <!-- Post -->
                 <div class="col-9 card-body position-relative me-2">
@@ -15,44 +15,23 @@
                     <small class="card-subtitle mb-2 text-body-secondary">{{ post.posted_on|timesince }} ago</small>
                     <p class="card-text my-3 post-content">{{ post.content }}</p>
                     <p class="card-text">
-                        <a class="text-decoration-none like-btn" data-post="{{ post.id }}">
+                        <a class="text-decoration-none like-btn" data-id="{{ post.id }}">
                             {% if like %}
                                 <i class="fa fa-thumbs-up"></i>
                             {% else %}
                                 <i class="fa fa-thumbs-o-up"></i>
                             {% endif %}
                         </a>
-                        <span class="likes-count mx-2 likes-count">{{ post.count_likes }}</span>
-                        <!-- Comment toggle -->
+                        <span class="likes-count mx-2">{{ post.count_likes }}</span>
+                        <!-- Comment collapse toggle -->
                         <a href="#commentCollapse{{ post.id }}" class="card-link text-decoration-none mx-2" data-bs-toggle="collapse" 
                             role="button" aria-expanded="false" aria-controls="commentCollapse{{ post.id }}">
                             <i class="fa fa-comment-o"></i>
-                        </a>{{ post.count_comments }}
+                        </a>
+                        <span class="comments-count">{{ post.count_comments }}</span>
                     </p>
-                    <!-- Comments -->
-                    <ul class="list-unstyled collapse" id="commentCollapse{{ post.id }}">
-                        <h6 class="mb-3">Comments</h6>
-                        <form class="text-end">
-                            <input class="form-control form-control-sm mb-1" type="text" name="comment" placeholder="Add comment">
-                            <input class="btn btn-primary btn-sm" type="submit" value="Comment">
-                        </form>
-                        {% for comment in post.get_comments %}
-                            <li>
-                                <div class="row">
-                                    <div class="col-1 me-sm-2 mt-1">
-                                        <img class="comment-profile-pic" src="{{ comment.owner.profile_pic.url }}" alt="profile-pic">
-                                    </div>
-                                    <div class="col-10">
-                                        <a href="{% url 'profile' comment.owner.id %}" class="h6 link-dark link-underline-opacity-0 link-underline-opacity-100-hover">{{ comment.owner }}</a>
-                                        <p>{{ comment.text }}</p>
-                                    </div>
-                                </div>
-                            </li>
-                        {% empty %}
-                            <li>No comments yet.</li>
-                        {% endfor %}
-                    </ul>
-                    <!-- Comments end -->
+                    
+                    {% include "network/comments.html" %}
 
                     <!-- Settings dropdown -->
                     {% if post.posted_by == request.user %}
@@ -68,11 +47,12 @@
                             </ul>
                         </div>
                         <!-- Modal -->
-                        <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="modal{{ post.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="modal{{ post.id }}" 
+                            tabindex="-1" aria-labelledby="postSettings" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Post</h1>
+                                        <h1 class="modal-title fs-5" id="postSettings">Edit Post</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">

@@ -11,6 +11,7 @@
         <script src="{% static 'network/like-unlike.js' %}"></script>
         <script src="{% static 'network/follow-unfollow.js' %}"></script>
         <script src="{% static 'network/edit-post.js' %}"></script>
+        <script src="{% static 'network/comment.js' %}"></script>
     </head>
     <body>
 
@@ -56,8 +57,7 @@
 
                 <!-- Right sidebar -->
                 <div class="col-lg-3 col-sm-1">
-                    {% block sidebar %}
-                    {% endblock %}
+                    {% include "network/sidebar.html" %}
                 </div>
                 <!-- Right sidebar end -->
 

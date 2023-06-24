@@ -5,6 +5,12 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', (e) => like(e.currentTarget));
     });
 
+    // Add event listener to comment button
+    const commentBtns = document.querySelectorAll('.comment-btn');
+    commentBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => comment(e.currentTarget));
+    });
+
     // Add event listener to edit button
     const editBtns = document.querySelectorAll('.edit-btn');
     editBtns.forEach(btn => {

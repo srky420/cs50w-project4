@@ -2,7 +2,7 @@
 
 {% block body %}
 
-    <h2 class="p-3 bg-body-tertiary border-bottom">Register</h2>
+    <h3 class="p-3 bg-body-tertiary border-bottom">Register</h3>
 
     {% if message %}
         <div class="msg">{{ message }}</div>
@@ -14,7 +14,8 @@
         <input class="form-control mb-3" type="email" name="email" placeholder="Email Address">
         <input class="form-control mb-3" type="password" name="password" placeholder="Password">
         <input class="form-control mb-3" type="password" name="confirmation" placeholder="Confirm Password">
-        <input class="form-control mb-3" type="file" name="profilepic" placeholder="Optional">
+        <label for="profile-pic" class="form-label">Upload Profile Picture (optional)</label>
+        <input class="form-control mb-3" type="file" name="profilepic" id="profile-pic">
         <input class="btn btn-primary" type="submit" value="Register">
         <p class="text-center my-3">Already have an account? <a href="{% url 'login' %}">Log In here.</a></p>
     </form>

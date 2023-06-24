@@ -1,0 +1,24 @@
+<div class="collapse" id="commentCollapse{{ post.id }}">
+    <h6 class="mb-3">Comments</h6>
+
+    {% if request.user.is_authenticated %}
+        <input type="text" class="form-control form-control-sm mb-1" id="comment{{ post.id }}">
+        <button class="btn btn-primary btn-sm comment-btn mb-3" data-id="{{ post.id }}">Comment</button>
+    {% endif %}
+
+    <ul class="list-unstyled comment-list">
+        {% for comment in post.get_comments %}
+            <li>
+                <div class="row">
+                    <div class="col-1 me-sm-2 mt-1">
+                        <img class="profile-pic profile-pic-sm" src="{{ comment.owner.profile_pic.url }}" alt="profile-pic">
+                    </div>
+                    <div class="col-10">
+                        <a href="{% url 'profile' comment.owner.id %}" class="h6 link-dark link-underline-opacity-0 link-underline-opacity-100-hover">{{ comment.owner }}</a>
+                        <p>{{ comment.text }}</p>
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
