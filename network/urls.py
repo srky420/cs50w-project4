@@ -14,6 +14,7 @@ urlpatterns = [
     path("like/<int:post_id>", views.like, name="like"),
     path("profile/<int:user_id>/follow", views.follow, name="follow"),
     path("edit/<int:post_id>", views.edit, name="edit"),
+    path("delete/<int:post_id>", views.delete, name="delete"),
     path("comment/<int:post_id>", views.comment, name="comment"),
     path("comment/delete/<int:comment_id>", views.delete_comment, name="delete_comment")
 ]

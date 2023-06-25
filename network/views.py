@@ -234,6 +234,26 @@ def edit(request, post_id):
 
 
 """
+Delete func
+"""
+@login_required
+def delete(request, post_id):
+    # Try to get post
+    try:
+        post = Post.objects.get(pk=post_id)
+    except Post.DoesNotExist:
+        return HttpResponseRedirect(reverse("index"))
+
+    # Check if post belongs to request's user
+    if not post.posted_by != request.user:
+        return HttpResponseRedirect(reverse("index"))
+    
+    post.delete()
+    return HttpResponseRedirect(reverse("index"))
+    
+
+
+"""
 Comment func
 """
 @login_required
