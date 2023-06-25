@@ -15,10 +15,10 @@ function like(like_btn) {
 
             // Increase/Decrease likes count
             if (data.liked) {
-                like_btn.innerHTML = `<i class="fa fa-thumbs-up"></i>`;
+                like_btn.innerHTML = `<i class="fa fa-heart text-danger"></i>`;
             }
             else {
-                like_btn.innerHTML = `<i class="fa fa-thumbs-o-up"></i>`;
+                like_btn.innerHTML = `<i class="fa fa-heart-o text-dark"></i>`;
             }
 
             // Set likes count

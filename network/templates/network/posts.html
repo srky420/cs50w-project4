@@ -15,23 +15,23 @@
                     <small class="card-subtitle mb-2 text-body-secondary">{{ post.posted_on|timesince }} ago</small>
                     <p class="card-text my-3 post-content">{{ post.content }}</p>
                     {% if post.image %}
-                        <div class="card-img rounded-3 overflow-hidden mb-3">
+                        <div class="card-img rounded-3 overflow-hidden mb-3" style="width: 90%;">
                             <img class="post-img" src="{{ post.image.url }}" alt="post-img">
                         </div>
                     {% endif %}
                     <p class="card-text">
                         <a class="text-decoration-none like-btn" data-id="{{ post.id }}">
                             {% if like %}
-                                <i class="fa fa-thumbs-up"></i>
+                                <i class="fa fa-heart text-danger"></i>
                             {% else %}
-                                <i class="fa fa-thumbs-o-up"></i>
+                                <i class="fa fa-heart-o text-dark"></i>
                             {% endif %}
                         </a>
                         <span class="likes-count mx-2">{{ post.count_likes }}</span>
                         <!-- Comment collapse toggle -->
                         <a href="#commentCollapse{{ post.id }}" class="card-link text-decoration-none mx-2" data-bs-toggle="collapse" 
                             role="button" aria-expanded="false" aria-controls="commentCollapse{{ post.id }}">
-                            <i class="fa fa-comment-o"></i>
+                            <i class="fa fa-comment-o text-dark"></i>
                         </a>
                         <span class="comments-count">{{ post.count_comments }}</span>
                     </p>
