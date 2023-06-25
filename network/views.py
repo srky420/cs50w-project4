@@ -88,9 +88,14 @@ def create_post(request):
         if not content:
             return HttpResponseRedirect(reverse("index"))
         
+        if request.FILES.get("image"):
+            image = request.FILES["image"]
+            post = Post.objects.create(content=content, image=image, posted_by=request.user)
+            post.save()
+            return HttpResponseRedirect(reverse("index"))
+
         post = Post.objects.create(content=content, posted_by=request.user)
         post.save()
-        
         return HttpResponseRedirect(reverse("index"))
     
     
@@ -295,6 +300,12 @@ def login_view(request):
         # Attempt to sign user in
         username = request.POST["username"]
         password = request.POST["password"]
+
+        if not username or not password:
+            return render(request, "network/login.html", {
+                "message": "Input fields required."
+            })
+
         user = authenticate(request, username=username, password=password)
 
         # Check if authentication successful

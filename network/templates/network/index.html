@@ -11,13 +11,14 @@
         <h3 class="p-3 bg-body-tertiary bg-opacity-75 m-0 border-bottom sticky-top">All Posts</h3>
         <!-- Create post form -->
         {% if request.user.is_authenticated %}
-            <form action="{% url 'create-post' %}" method="post" class="text-end mb-3">
+            <form action="{% url 'create-post' %}" method="post" class="text-end mb-3" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="form-floating">
-                    <textarea name="content" class="form-control border-end-0 border-start-0 rounded-0" placeholder="Leave a comment here" style="height: 120px;"></textarea>
+                    <textarea name="content" class="form-control border-0 rounded-0" placeholder="Leave a comment here" style="height: 120px;" required></textarea>
                     <label for="post-content" class="text-muted">What's on your mind?</label>
-                    <input class="btn btn-primary rounded-top-0 rounded-end-0" type="submit" value="Create Post">
                 </div>
+                <input class="form-control" type="file" name="image">
+                <input class="btn btn-primary rounded-top-0 rounded-end-0" type="submit" value="Create Post">
             </form> 
         {% endif %}
     {% endif %}

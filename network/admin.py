@@ -9,7 +9,7 @@ class UserAdmin(admin.ModelAdmin):
     
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ("id", "posted_by", "content", "posted_on")
+    list_display = ("id", "posted_by", "content", "posted_on", "image")
     filter_horizontal = ("likes",)
 
 

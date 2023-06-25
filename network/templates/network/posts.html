@@ -14,6 +14,11 @@
                     </h5>
                     <small class="card-subtitle mb-2 text-body-secondary">{{ post.posted_on|timesince }} ago</small>
                     <p class="card-text my-3 post-content">{{ post.content }}</p>
+                    {% if post.image %}
+                        <div class="card-img rounded-3 overflow-hidden mb-3">
+                            <img class="post-img" src="{{ post.image.url }}" alt="post-img">
+                        </div>
+                    {% endif %}
                     <p class="card-text">
                         <a class="text-decoration-none like-btn" data-id="{{ post.id }}">
                             {% if like %}

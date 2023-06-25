@@ -17,6 +17,7 @@
 
 .msg {
     color: red;
+    padding: 0 1rem;
 }
 
 .profile-pic {
@@ -41,4 +42,10 @@
 
 .post-content {
     white-space: pre-line;
+}
+
+.post-img {
+    width: 500px;
+    height: 500px;
+    object-fit: cover;
 }
