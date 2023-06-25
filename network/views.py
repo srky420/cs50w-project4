@@ -283,7 +283,7 @@ def delete_comment(request, comment_id):
     return JsonResponse({
         "msg": "Comment deleted!",
         "comments_count": comment.post.count_comments()
-        }, status=201)
+        }, status=200)
 
 
 """

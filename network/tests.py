@@ -244,3 +244,48 @@ class ViewsTest(TestCase):
         response = c.put(path=f"/edit/{harrys_post.id}", data={"content": "Edited post"}, content_type="application/json")
         self.assertEqual(response.status_code, 204)
         
+    
+    # Test comment
+    def test_comment(self):
+        c = Client()
+        c.login(username="Harry", password="12345")
+        post = Post.objects.filter(posted_by=User.objects.get(username="Ron")).first()
+        max_id = Post.objects.order_by("-id").first()
+        
+        # Test GET request
+        response = c.get(f"/comment/{post.id}", data={"comment": "Hello, world"}, content_type="application/json")
+        self.assertEqual(response.status_code, 400)
+        
+        # Test invalid post
+        response = c.post(f"/comment/{max_id.id + 1}", data={"comment": "Hello, world"}, content_type="application/json")
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json()["error"], "Post does not exist!")
+        
+        # Test valid post
+        response = c.post(f"/comment/{post.id}", data={"comment": "Hello, world"}, content_type="application/json")
+        self.assertEqual(response.status_code, 201)
+        
+        
+    # Test delete comment
+    def test_delete_comment(self):
+        c = Client()
+        c.login(username="Harry", password="12345")
+        comment = Comment.objects.filter(owner=User.objects.get(username="Harry")).first()
+        others_comment = Comment.objects.filter(owner=User.objects.get(username="Ron")).first()
+        max_id = Comment.objects.order_by("-id").first()
+        
+        # Test invalid comment id
+        response = c.get(f"/comment/delete/{max_id.id + 1}")
+        self.assertEqual(response.status_code, 400)
+        
+        # Test forbidden request
+        response = c.get(f"/comment/delete/{others_comment.id}")
+        self.assertEqual(response.status_code, 403)
+        
+        # Test delete valid comment
+        response = c.get(f"/comment/delete/{comment.id}")
+        self.assertEqual(response.status_code, 200)
+        
+        
+        
+        
