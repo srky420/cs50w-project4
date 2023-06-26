@@ -16,7 +16,7 @@
                     <p class="card-text my-3 post-content">{{ post.content }}</p>
                     {% if post.image %}
                         <div class="card-img rounded-3 overflow-hidden mb-3" style="width: 90%;">
-                            <img class="post-img" src="{{ post.image.url }}" alt="post-img">
+                            <img class="w-100 object-fit-cover" style="height: 500px;" src="{{ post.image.url }}" alt="post-img">
                         </div>
                     {% endif %}
                     <p class="card-text">

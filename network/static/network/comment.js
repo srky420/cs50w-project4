@@ -20,9 +20,8 @@ function comment(comment_btn) {
     })
     .then(res => res.json())
     .then(data => {
-        console.log(data.profile_pic_url);
-        console.log(data.comment);
-
+        console.log(data);
+        
         // Create new comment item
         let li = document.createElement('li');
         li.innerHTML = `<li id="comment${data.comment_id}">
@@ -42,7 +41,7 @@ function comment(comment_btn) {
                             </div>
                         </li>`;
         
-        // Append li to comment list
+        // Append li to comment list and update comments count
         post.querySelector('.comment-list').append(li);
         post.querySelector('.comments-count').innerHTML = data.comments_count;
 
@@ -80,6 +79,8 @@ function delete_comment(delete_btn) {
     })
     .catch(error => {
         console.log(error);
+
+        // Enable delete button
         delete_btn.disabled = false;
     })
 

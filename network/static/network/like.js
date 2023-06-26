@@ -10,10 +10,10 @@ function like(like_btn) {
     fetch(`/like/${post_id}`)
         .then(res => res.json())
         .then(data => {
-            console.log(data.msg);
+            console.log(data);
             like_btn.classList.remove('disabled');
 
-            // Increase/Decrease likes count
+            // Toggle like
             if (data.liked) {
                 like_btn.innerHTML = `<i class="fa fa-heart text-danger"></i>`;
             }
@@ -26,6 +26,8 @@ function like(like_btn) {
         })
         .catch(error => {
             console.log(error);
+
+            // Enable like button
             like_btn.classList.remove('disabled');
         })
 
