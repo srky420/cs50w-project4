@@ -12,6 +12,7 @@
         {% endif %}
     </h3>
 
+    <!-- Profile -->
     <div class="row">
         <div class="col-2 m-3">
             <img class="profile-pic profile-pic-lg" src="{{ user.profile_pic.url }}" alt="profile-pic">
@@ -26,6 +27,7 @@
             </p>
         
             {% if request.user.is_authenticated and user != request.user %}
+                <!-- Follow button -->
                 {% if is_following %}
                     <button class="btn btn-primary mt-3" id="follow-btn" data-id="{{ user.id }}"><i class="fa fa-close"></i> Unfollow</button>
                 {% else %}

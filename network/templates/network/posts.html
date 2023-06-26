@@ -38,39 +38,9 @@
                     
                     {% include "network/comments.html" %}
 
-                    <!-- Settings dropdown -->
-                    {% if post.posted_by == request.user %}
-
-                        <div class="dropdown position-absolute" style="top: 10px; right: 20px;">
-                            <button class="btn btn-light dropdown-toggle bg-transparent" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fa fa-bars"></i>
-                            </button>
-
-                            <ul class="dropdown-menu">
-                                <li><button class="dropdown-item edit-btn" data-id="{{ post.id }}" data-bs-toggle="modal" data-bs-target="#modal{{ post.id }}">Edit</button></li>
-                                <li><button class="dropdown-item delete-btn" data-id="{{ post.id }}">Delete</button></li>
-                            </ul>
-                        </div>
-                        <!-- Modal -->
-                        <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="modal{{ post.id }}" 
-                            tabindex="-1" aria-labelledby="postSettings" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="postSettings">Edit Post</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <textarea class="form-control edit-textarea" rows="7"></textarea>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary close-btn" data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary save-btn">Save changes</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Modal end -->
+                    {% if post.posted_by == request.user %} 
+                        <!-- Settings -->
+                        {% include "network/settings.html" %}
                     {% endif %}
                 </div>
             </div>

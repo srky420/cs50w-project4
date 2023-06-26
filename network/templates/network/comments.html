@@ -17,8 +17,8 @@
                         <a href="{% url 'profile' comment.owner.id %}" class="h6 link-dark link-underline-opacity-0 link-underline-opacity-100-hover">{{ comment.owner }}</a>
                         <small class="text-muted ms-2">{{ comment.created_on|timesince }} ago</small>
                         <p>{{ comment.text }}</p>
-                        <!-- Delete comment button -->
                         {% if comment.owner == request.user %}
+                            <!-- Delete comment button -->
                             <button class="btn btn-outline-danger btn-sm border-0 p-2 py-1 position-absolute" 
                                 data-id="{{ comment.id }}" data-postid="{{ post.id }}" style="top: 0; right: 0;" onclick="delete_comment(this)">
                                 <i class="fa fa-trash-o"></i>

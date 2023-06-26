@@ -3,7 +3,7 @@
         <img class="profile-pic profile-pic-sm" src="{{ request.user.profile_pic.url }}" alt="profile-pic">
         <a href="{% url 'profile' request.user.id %}" class="link-dark link-underline-opacity-0 link-underline-opacity-100-hover">{{ request.user }}</a>
     </h5>
-    <ul class="list-unstyled">
+    <ul class="list-unstyled m-3">
         <li>Followers: <strong>{{ request.user.get_followers_count }}</strong></li>
         <li>Following: <strong id="followings-count">{{ request.user.get_followings_count }}</strong></li>
     </ul>

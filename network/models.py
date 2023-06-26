@@ -47,28 +47,6 @@ class Post(models.Model):
         except:
             return False
     
-    # Serialize comments
-    def serialize_comments(self):
-        comments = self.comments.all()
-        list = []
-        for comment in comments:
-            list.append({
-                "text": comment.text,
-                "owner": comment.owner.username,
-                "created": comment.created_on.strftime("%b %d %Y, %I:%M %p")
-            })
-        return list
-    
-    # Serialize data
-    def serialize(self):
-        return {
-            "content": self.content,
-            "posted_on": self.posted_on.strftime("%b %d %Y, %I:%M %p"),
-            "posted_by": {"id": self.posted_by.id, "username": self.posted_by.username},
-            "likes": self.get_likes(),
-            "comments": list(self.serialize_comments())
-        }
-    
     def __str__(self):
         return f"A post created by {self.posted_by} on {self.posted_on}"
 
