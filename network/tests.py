@@ -250,20 +250,21 @@ class ViewsTest(TestCase):
         c = Client()
         c.login(username="Harry", password="12345")
         post = Post.objects.filter(posted_by=User.objects.get(username="Harry")).first()
-        others_post = Post.objects.filter(posted_by=User.objects.get(username="Ron"))
+        others_post = Post.objects.filter(posted_by=User.objects.get(username="Ron")).first()
         max_id = Post.objects.order_by("-id").first()
 
         # Test invalid post
         response = c.get(f"/delete/{max_id.id + 1}")
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 400)
 
         # Test forbidden user
         response = c.get(f"/delete/{others_post.id}")
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 403)
 
         # Test valid post deletion
         response = c.get(f"/delete/{post.id}")
         self.assertEqual(response.status_code, 200)
+    
     
     # Test comment
     def test_comment(self):

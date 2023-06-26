@@ -50,3 +50,23 @@ function save(content, post, post_id) {
         post.querySelector('.close-btn').disabled = false;
     })
 }
+
+function delete_post(delete_btn) {
+    // Create an overlay for post
+    const post_id = delete_btn.dataset.id;
+    const post = document.querySelector(`#post${post_id}`);
+    const overlay = document.createElement('div');
+    overlay.classList.add('overlay');
+    post.append(overlay);
+
+    fetch(`/delete/${post_id}`)
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+            post.remove();
+        })
+        .catch(error => {
+            console.log(error);
+            overlay.remove();
+        })
+}

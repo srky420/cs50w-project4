@@ -1,6 +1,6 @@
 {% for post, like in zipped_list %}
 
-        <div class="card w-100 border-0" id="post{{ post.id }}">
+        <div class="card w-100 border-0 rounded-0 border-bottom position-relative" id="post{{ post.id }}">
             <div class="row">
                 <!-- Profile pic -->
                 <div class="col-1 m-3">
@@ -48,7 +48,7 @@
 
                             <ul class="dropdown-menu">
                                 <li><button class="dropdown-item edit-btn" data-id="{{ post.id }}" data-bs-toggle="modal" data-bs-target="#modal{{ post.id }}">Edit</button></li>
-                                <li><button class="dropdown-item delete-btn">Delete</button></li>
+                                <li><button class="dropdown-item delete-btn" data-id="{{ post.id }}">Delete</button></li>
                             </ul>
                         </div>
                         <!-- Modal -->
@@ -75,7 +75,6 @@
                 </div>
             </div>
         </div>
-        <hr class="my-0">
 
 {% empty %}
     <h5 class="p-3">No posts yet.</h5>

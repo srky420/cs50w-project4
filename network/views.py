@@ -242,16 +242,15 @@ def delete(request, post_id):
     try:
         post = Post.objects.get(pk=post_id)
     except Post.DoesNotExist:
-        return HttpResponseRedirect(reverse("index"))
+        return JsonResponse({"error": "Post does not exist!"}, status=400)
 
     # Check if post belongs to request's user
-    if not post.posted_by != request.user:
-        return HttpResponseRedirect(reverse("index"))
+    if post.posted_by != request.user:
+        return JsonResponse({"error": "Forbidden delete request!"}, status=403)
     
     post.delete()
-    return HttpResponseRedirect(reverse("index"))
+    return JsonResponse({"msg": "Post deleted!"}, status=200)
     
-
 
 """
 Comment func

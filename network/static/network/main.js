@@ -17,6 +17,12 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', (e) => edit(e.currentTarget));
     });
 
+    // Add event listener to delete button
+    const deleteBtn = document.querySelectorAll('.delete-btn');
+    deleteBtn.forEach(btn => {
+        btn.addEventListener('click', (e) => delete_post(e.currentTarget));
+    });
+
     // Add event listener to follow button
     document.querySelector('#follow-btn').addEventListener('click', (e) => follow(e.currentTarget));
 
