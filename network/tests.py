@@ -112,8 +112,10 @@ class ViewsTest(TestCase):
         
         # Test with login
         c.login(username="Harry", password="12345")
-        response = c.post("/create-post", data={"content": "Hello, World"})
-        self.assertEqual(response.status_code, 302)
+        c.post("/create-post", data={"content": "Hello, World"})
+        post = Post.objects.order_by("-id").first()
+        self.assertEqual(post.posted_by.username, "Harry")
+        self.assertEqual(post.content, "Hello, World")
 
 
     # Test all posts view

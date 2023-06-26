@@ -52,11 +52,16 @@ function save(content, post, post_id) {
 }
 
 function delete_post(delete_btn) {
-    // Create an overlay for post
+    // Create an overlay for loading
     const post_id = delete_btn.dataset.id;
     const post = document.querySelector(`#post${post_id}`);
     const overlay = document.createElement('div');
     overlay.classList.add('overlay');
+    overlay.innerHTML = `<div class="d-flex justify-content-center align-items-center h-100">
+                            <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>`;
     post.append(overlay);
 
     fetch(`/delete/${post_id}`)
