@@ -10,6 +10,7 @@ A Social Media website with following features:
 - See user profiles and follow/unfollow users
 - Like/unlike posts
 - Comment on posts and delete comments
+- Automated unit testing using github workflow
 
 [Youtube Demonstration](https://youtu.be/UNHE6buS_XU?si=VR80Mhckre3rIbwN)
 
